@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="title_movie_detail">movie Detail</string>
+    <string name="movie_image_content_description">movie image</string>
+
+        <string name="placeholder_movie_plot">Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.
+        Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.
+    </string>
+    <string name="movie_reviews">Reviews</string>
+    <string name="movie_videos">Trailers</string>
+
+</resources>
