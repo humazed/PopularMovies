@@ -1,13 +1,22 @@
 package com.example.huma.popularmovies.ui;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.huma.popularmovies.R;
@@ -18,6 +27,8 @@ import com.example.huma.popularmovies.model.Movies;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -35,28 +46,59 @@ import retrofit.Retrofit;
 public class MovieListActivity extends AppCompatActivity {
     private static final String TAG = MovieListActivity.class.getSimpleName();
 
+    @Bind(R.id.sort_spinner) Spinner mSortSpinner;
+    @Bind(R.id.movie_list) RecyclerView mMovieList;
+
+    @TheMovieDbAPI.SortingOrder String sortBy = TheMovieDbAPI.POPULARITY_DESC;
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     public boolean mTwoPane;
 
-    private RecyclerView mRecyclerView;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.movie_list);
+        ButterKnife.bind(this);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        update();
+        // Setup spinner
+        mSortSpinner.setAdapter(new MyAdapter(
+                toolbar.getContext(),
+                new String[]{
+                        "most popular",
+                        "highest rated",
+                        "favorites",
+                }));
+
+        mSortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        sortBy = TheMovieDbAPI.POPULARITY_DESC;
+                        break;
+                    case 1:
+                        sortBy = TheMovieDbAPI.RATED_DESC;
+                        break;
+                    case 2:
+                        // TODO: 1/29/2016 add to fav and save it in sharedPred
+                        break;
+                }
+                update(sortBy);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +117,8 @@ public class MovieListActivity extends AppCompatActivity {
         }
     }
 
-    private void update() {
+    //fetch data form internet and display it.
+    private void update(@TheMovieDbAPI.SortingOrder String sortBy) {
         //http://api.themoviedb.org/3/discover/movie?api_key=397b65dc1146c99252660a80e3d34c6d
         // &sort_by=popularity.desc
 
@@ -87,14 +130,12 @@ public class MovieListActivity extends AppCompatActivity {
                 .build();
 
         TheMovieDbAPI dbAPI = retrofit.create(TheMovieDbAPI.class);
-        // TODO: 1/27/2016 add spinner to change the sort
-        Call<Movies> moviesCall = dbAPI.getMovies(TheMovieDbAPI.POPULARITY_DESC);
+        Call<Movies> moviesCall = dbAPI.getMovies(sortBy);
         moviesCall.enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Response<Movies> response, Retrofit retrofit) {
-
                 List<Movie> movies = response.body().getMovies();
-                setupRecyclerView(mRecyclerView, movies);
+                setupRecyclerView(mMovieList, movies);
             }
 
             @Override
@@ -107,6 +148,43 @@ public class MovieListActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Movie> movies) {
         recyclerView.setAdapter(new MoviesRecyclerViewAdapter(this, movies));
         recyclerView.setLayoutManager(new GridLayoutManager(this, mTwoPane ? 2 : 3));
+    }
+
+    private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
+        private final Helper mDropDownHelper;
+
+        public MyAdapter(Context context, String[] objects) {
+            super(context, android.R.layout.simple_list_item_1, objects);
+            mDropDownHelper = new Helper(context);
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View view;
+
+            if (convertView == null) {
+                // Inflate the drop down using the helper's LayoutInflater
+                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
+                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            } else {
+                view = convertView;
+            }
+
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            textView.setText(getItem(position));
+
+            return view;
+        }
+
+        @Override
+        public Resources.Theme getDropDownViewTheme() {
+            return mDropDownHelper.getDropDownViewTheme();
+        }
+
+        @Override
+        public void setDropDownViewTheme(Resources.Theme theme) {
+            mDropDownHelper.setDropDownViewTheme(theme);
+        }
     }
 
 }
