@@ -9,4 +9,7 @@
     <string name="movie_reviews">Reviews</string>
     <string name="movie_videos">Trailers</string>
 
+
+    <string name="movie_details_rating">Average rating: %1$s</string>
+
 </resources>

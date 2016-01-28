@@ -106,7 +106,7 @@ public class MovieListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Movie> movies) {
         recyclerView.setAdapter(new MoviesRecyclerViewAdapter(this, movies));
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, mTwoPane ? 2 : 3));
     }
 
 }
