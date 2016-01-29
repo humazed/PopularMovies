@@ -17,6 +17,7 @@
 package com.example.huma.popularmovies.utils;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -56,6 +57,15 @@ public final class UiUtils {
                 builder.append(str);
             }
         return builder.toString();
+    }
+
+
+    public static float dpFromPx(final Context context, final float px) {
+        return px / context.getResources().getDisplayMetrics().density;
+    }
+
+    public static float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
     }
 
 }

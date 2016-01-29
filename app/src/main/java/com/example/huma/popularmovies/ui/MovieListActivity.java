@@ -24,6 +24,7 @@ import com.example.huma.popularmovies.adapter.MoviesRecyclerViewAdapter;
 import com.example.huma.popularmovies.api.TheMovieDbAPI;
 import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Movies;
+import com.example.huma.popularmovies.utils.UiUtils;
 
 import java.util.List;
 
@@ -147,8 +148,10 @@ public class MovieListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Movie> movies) {
         recyclerView.setAdapter(new MoviesRecyclerViewAdapter(this, movies));
-        recyclerView.setLayoutManager(new GridLayoutManager(this, mTwoPane ? 2 : 3));
+//        recyclerView.setLayoutManager(new GridLayoutManager(this, mTwoPane ? 2 : 3));
+        recyclerView.setLayoutManager(new AutoFitRecyclerView(this, (int) UiUtils.pxFromDp(this, 100f)));
     }
+
 
     private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
         private final Helper mDropDownHelper;
@@ -184,6 +187,29 @@ public class MovieListActivity extends AppCompatActivity {
         @Override
         public void setDropDownViewTheme(Resources.Theme theme) {
             mDropDownHelper.setDropDownViewTheme(theme);
+        }
+    }
+
+    private class AutoFitRecyclerView extends GridLayoutManager {
+
+        private int minItemWidth;
+
+        public AutoFitRecyclerView(Context context, int minItemWidth) {
+            super(context, 1);
+            this.minItemWidth = minItemWidth;
+        }
+
+        @Override
+        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+            updateSpanCount();
+            super.onLayoutChildren(recycler, state);
+        }
+
+        private void updateSpanCount() {
+            int spanCount = getWidth() / minItemWidth;
+            if (spanCount < 1) spanCount = 1;
+            if (spanCount > 4) spanCount = 4;
+            this.setSpanCount(spanCount);
         }
     }
 
