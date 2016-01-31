@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,11 +123,9 @@ public class MovieListActivity extends AppCompatActivity {
     private void update(@TheMovieDbAPI.SortingOrder String sortBy) {
         //http://api.themoviedb.org/3/discover/movie?api_key=397b65dc1146c99252660a80e3d34c6d
         // &sort_by=popularity.desc
-
-        final String BASE_URL = "http://api.themoviedb.org/";
-
+        Log.d(TAG, "update " + "star");
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(TheMovieDbAPI.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -135,7 +134,7 @@ public class MovieListActivity extends AppCompatActivity {
         moviesCall.enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Response<Movies> response, Retrofit retrofit) {
-                List<Movie> movies = response.body().getMovies();
+                List<Movie> movies = response.body().getResults();
                 setupRecyclerView(mMovieList, movies);
             }
 

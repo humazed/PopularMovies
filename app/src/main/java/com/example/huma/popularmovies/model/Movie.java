@@ -30,7 +30,7 @@ public class Movie implements Parcelable {
     private String releaseDate;
     @SerializedName("genre_ids")
     @Expose
-    private List<Integer> genreIds = new ArrayList<Integer>();
+    private List<Integer> genreIds = new ArrayList<>();
     @SerializedName("id")
     @Expose
     private int id;

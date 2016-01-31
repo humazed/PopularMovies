@@ -13,7 +13,7 @@
     tools:context=".ui.MovieListActivity">
 
     <!--
-    This layout is a two-pane layout for the movies
+    This layout is a two-pane layout for the results
     master/detail flow.
     
     -->
