@@ -1,5 +1,7 @@
 package com.example.huma.popularmovies.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -75,6 +78,9 @@ public class MovieDetailFragment extends Fragment {
 
     boolean isSelected;
 
+    private List<Trailer> mTrailers;
+    private List<Review> mReviews;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -115,8 +121,14 @@ public class MovieDetailFragment extends Fragment {
             isSelected = savedInstanceState.getBoolean(FAV_BUTTON_STATE, false);
             mMovieFavoriteButton.setSelected(isSelected);
             Log.d(TAG, "onCreateView savedInstanceState" + isSelected);
-        } else Log.d(TAG, "onCreateView savedInstanceState " + "null");
+        } else Log.d(TAG, "onCreateView savedInstanceState " + "null" + isSelected);
 
+        mTrailsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                playTrailer(mTrailers.get(position));
+            }
+        });
 
         //show mMovieFavoriteButton when in TwoPane as the floating button is hidden.
         if (mTwoPane) mMovieFavoriteButton.setVisibility(View.VISIBLE);
@@ -145,6 +157,13 @@ public class MovieDetailFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    public void playTrailer(Trailer trailer) {
+        if (trailer.getSite().equals(Trailer.SITE_YOUTUBE))
+            getActivity().startActivity(new Intent(
+                    Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey())));
+        Log.d(TAG, "playTrailer " + Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
     }
 
     public void setMovieFavored(Movie movie, boolean favored) {
@@ -185,15 +204,14 @@ public class MovieDetailFragment extends Fragment {
         trailersCall.enqueue(new Callback<Trailers>() {
             @Override//videoNameView.setText(video.getSite() + ": " + video.getName());
             public void onResponse(Response<Trailers> response, Retrofit retrofit) {
-                List<Trailer> trailers = null;
                 if (response.body() != null) {
-                    trailers = response.body().getResults();
+                    mTrailers = response.body().getResults();
                 }
-                if (trailers != null) {
-                    Log.d(TAG, "onResponse size" + trailers.size());
-                    String[] s = new String[trailers.size()];
-                    for (int i = 0; i < trailers.size(); i++) {
-                        Trailer trailer = trailers.get(i);
+                if (mTrailers != null) {
+                    Log.d(TAG, "onResponse size" + mTrailers.size());
+                    String[] s = new String[mTrailers.size()];
+                    for (int i = 0; i < mTrailers.size(); i++) {
+                        Trailer trailer = mTrailers.get(i);
                         s[i] = trailer.getSite() + ": " + trailer.getName();
                     }
                     Log.d(TAG, "onResponse() returned: loadTrails" + Arrays.toString(s));
@@ -228,14 +246,13 @@ public class MovieDetailFragment extends Fragment {
         trailersCall.enqueue(new Callback<Reviews>() {
             @Override
             public void onResponse(Response<Reviews> response, Retrofit retrofit) {
-                List<Review> reviews = null;
                 if (response.body() != null) {
-                    reviews = response.body().getResults();
+                    mReviews = response.body().getResults();
                 }
-                if (reviews != null) {
-                    String[] s = new String[reviews.size()];
+                if (mReviews != null) {
+                    String[] s = new String[mReviews.size()];
                     for (int i = 0; i < s.length; i++) {
-                        s[i] = reviews.get(i).getContent();
+                        s[i] = mReviews.get(i).getContent();
                     }
 
                     UiUtils.setListViewHeightBasedOnItems(mReviewListView);

@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Trailer {
 
+    public static final String SITE_YOUTUBE = "YouTube";
+
     @SerializedName("id")
     @Expose
     private String id;

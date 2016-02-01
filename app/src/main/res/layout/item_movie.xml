@@ -21,6 +21,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:contentDescription="@string/movie_image_content_description"
+        android:focusable="false"
         android:scaleType="centerCrop"/>
 
 </FrameLayout>
