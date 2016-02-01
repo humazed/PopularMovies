@@ -28,9 +28,13 @@ import butterknife.ButterKnife;
 public class MovieDetailActivity extends AppCompatActivity {
     private static final String TAG = MovieDetailActivity.class.getSimpleName();
 
+    public static final String FAV_BUTTON_STATE = "favButtonState";
+
     @Bind(R.id.backdrop_path_image_view) ImageView mBackdropPathImageView;
     @Bind(R.id.detail_toolbar) Toolbar mDetailToolbar;
-    @Bind(R.id.fab) FloatingActionButton mFab;
+    @Bind(R.id.favourite_fab) FloatingActionButton mFavouriteFab;
+
+    private boolean isSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +43,34 @@ public class MovieDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(mDetailToolbar);
 
+        if (savedInstanceState != null) {
+            isSelected = savedInstanceState.getBoolean(FAV_BUTTON_STATE);
+            mFavouriteFab.setSelected(isSelected);
+            Log.d(TAG, "onCreate savedInstanceState" + isSelected);
+        } else Log.d(TAG, "onCreate savedInstanceState" + "null " + isSelected);
+
         //get selected Movie MovieListActivity.
         Movie mMovie = getIntent().getParcelableExtra(MovieDetailFragment.KEY_MOVIE);
 
 
-        mFab.setOnClickListener(new View.OnClickListener() {
+        mFavouriteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: 1/27/2016 star the movie
+                if (!isSelected) {
+                    isSelected = true;
+                    mFavouriteFab.setSelected(true);
+                } else {
+                    isSelected = false;
+                    mFavouriteFab.setSelected(false);
+                }
+            }
+        });
+
+        mBackdropPathImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -77,8 +101,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putParcelable(MovieDetailFragment.KEY_MOVIE,
-                    mMovie);
+            arguments.putParcelable(MovieDetailFragment.KEY_MOVIE, mMovie);
             MovieDetailFragment fragment = new MovieDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -86,6 +109,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .commit();
             Log.d(TAG, "onCreate " + "inside");
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(FAV_BUTTON_STATE, isSelected);
+        Log.d(TAG, "onSaveInstanceState " + isSelected);
     }
 
     @Override

@@ -18,6 +18,8 @@ package com.example.huma.popularmovies.utils;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,13 +31,18 @@ import android.widget.ListView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public final class UiUtils {
     private static final String TAG = UiUtils.class.getSimpleName();
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+    public static final String PREF_FAVORED_MOVIES = "pref_favored_movies";
+
 
     private UiUtils() {
         throw new AssertionError("No instances.");
@@ -80,7 +87,9 @@ public final class UiUtils {
      */
     public static boolean setListViewHeightBasedOnItems(ListView listView) {
 
-        ListAdapter listAdapter = listView.getAdapter();
+        ListAdapter listAdapter = null;
+        if (listView != null) listAdapter = listView.getAdapter();
+
         if (listAdapter != null) {
 
             int numberOfItems = listAdapter.getCount();
@@ -107,6 +116,21 @@ public final class UiUtils {
         } else {
             return false;
         }
+    }
 
+    public static void addToFavorites(final Context context, long movieId) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> set = sp.getStringSet(PREF_FAVORED_MOVIES, null);
+        if (set == null) set = new HashSet<>();
+        set.add(String.valueOf(movieId));
+        sp.edit().putStringSet(PREF_FAVORED_MOVIES, set).apply();
+    }
+
+    public static void removeFromFavorites(final Context context, long movieId) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> set = sp.getStringSet(PREF_FAVORED_MOVIES, null);
+        if (set == null) set = new HashSet<>();
+        set.remove(String.valueOf(movieId));
+        sp.edit().putStringSet(PREF_FAVORED_MOVIES, set).apply();
     }
 }

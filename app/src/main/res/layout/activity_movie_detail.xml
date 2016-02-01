@@ -52,123 +52,13 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-
-    <!--<com.ewintory.udacity.popularmovies.ui.widget.AspectLockedImageView-->
-    <!--android:id="@+id/movie_poster"-->
-    <!--android:layout_width="@dimen/movie_details_poster_width"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginBottom="@dimen/keyline_1"-->
-    <!--android:layout_marginLeft="@dimen/movie_details_poster_left_margin"-->
-    <!--android:layout_marginStart="@dimen/movie_details_poster_left_margin"-->
-    <!--android:layout_marginTop="@dimen/movie_details_poster_top_margin"-->
-    <!--android:contentDescription="@null"-->
-    <!--app:imageAspectRatio="@dimen/movie_item_image_aspect_ratio"-->
-    <!--tools:src="@drawable/placeholder_movie_item_image"/>-->
-
-    <!--<ImageView-->
-    <!--android:id="@+id/movie_poster"-->
-    <!--android:layout_width="@dimen/movie_details_poster_width"-->
-    <!--android:layout_height="222.2dp"-->
-    <!--android:layout_gravity="center_vertical|start"-->
-    <!--android:layout_marginBottom="@dimen/keyline_1"-->
-    <!--android:layout_marginLeft="@dimen/movie_details_poster_left_margin"-->
-    <!--android:layout_marginStart="@dimen/movie_details_poster_left_margin"-->
-    <!--android:layout_marginTop="@dimen/movie_details_poster_top_margin"-->
-    <!--android:contentDescription="@null"-->
-    <!--android:src="@color/colorPrimary"-->
-    <!--app:layout_anchor="@+id/movie_detail_container"-->
-    <!--app:layout_anchorGravity="top|start"-->
-    <!--android:scaleType="fitXY"/>-->
-
-
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:clipChildren="false"-->
-        <!--android:layout_marginTop="200dp"-->
-        <!--app:layout_anchor="@+id/movie_detail_container"-->
-        <!--app:layout_anchorGravity="top|start">-->
-
-        <!--<ImageView-->
-            <!--android:id="@+id/movie_poster"-->
-            <!--android:layout_width="@dimen/movie_details_poster_width"-->
-            <!--android:layout_height="222.2dp"-->
-            <!--android:layout_gravity="center_vertical|start"-->
-            <!--android:layout_marginBottom="@dimen/keyline_1"-->
-            <!--android:layout_marginLeft="@dimen/movie_details_poster_left_margin"-->
-            <!--android:layout_marginStart="@dimen/movie_details_poster_left_margin"-->
-            <!--android:layout_marginTop="@dimen/movie_details_poster_top_margin"-->
-            <!--android:contentDescription="@null"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:src="@mipmap/ic_launcher"/>-->
-        <!--&lt;!&ndash;<com.ewintory.udacity.popularmovies.ui.widget.AspectLockedImageView&ndash;&gt;-->
-        <!--&lt;!&ndash;android:id="@+id/movie_poster"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="@dimen/movie_details_poster_width"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginBottom="@dimen/keyline_1"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginLeft="@dimen/movie_details_poster_left_margin"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginStart="@dimen/movie_details_poster_left_margin"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_marginTop="@dimen/movie_details_poster_top_margin"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:contentDescription="@null"&ndash;&gt;-->
-        <!--&lt;!&ndash;app:imageAspectRatio="@dimen/movie_item_image_aspect_ratio"&ndash;&gt;-->
-        <!--&lt;!&ndash;tools:src="@drawable/placeholder_movie_item_image"/>&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<ImageButton&ndash;&gt;-->
-        <!--&lt;!&ndash;android:id="@+id/movie_favorite_button"&ndash;&gt;-->
-        <!--&lt;!&ndash;style="@style/FavoriteButton"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_alignParentEnd="true"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_alignParentRight="true"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_alignParentTop="true"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:contentDescription="@string/movie_item_btn_favorite_desc"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:tint="@color/theme_primary"/>&ndash;&gt;-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_toEndOf="@id/movie_poster"-->
-            <!--android:layout_toRightOf="@id/movie_poster"-->
-            <!--android:orientation="vertical"-->
-            <!--android:padding="@dimen/keyline_1">-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/movie_title"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textColor="@color/body_text_1"-->
-                <!--android:textSize="@dimen/text_size_large"-->
-                <!--android:textStyle="bold"-->
-                <!--tools:text="Jurassic Park"/>-->
-
-
-            <!--<TextView-->
-                <!--android:id="@+id/movie_release_date"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textColor="@color/body_text_2"-->
-                <!--android:textSize="@dimen/text_size_medium"-->
-                <!--tools:text="February 2013"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/movie_average_rating"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textColor="@color/body_text_2"-->
-                <!--android:textSize="@dimen/text_size_medium"-->
-                <!--tools:text="Rating: 8/10"/>-->
-
-        <!--</LinearLayout>-->
-
-    <!--</RelativeLayout>-->
-
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/favourite_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/stat_notify_chat"
+        style="@style/FavoriteButton"
         app:layout_anchor="@+id/movie_detail_container"
         app:layout_anchorGravity="top|end"/>
 

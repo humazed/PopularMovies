@@ -59,6 +59,15 @@ public class Movie implements Parcelable {
     @Expose
     private float voteAverage;
 
+    boolean favored = false;
+
+    public boolean isFavored() {
+        return favored;
+    }
+
+    public void setFavored(boolean favored) {
+        this.favored = favored;
+    }
 
     @Override
     public int describeContents() {
@@ -78,7 +87,7 @@ public class Movie implements Parcelable {
         dest.writeInt(voteCount);
         dest.writeFloat(popularity);
         dest.writeFloat(voteAverage);
-
+        dest.writeByte(favored ? (byte) 1 : (byte) 0);
     }
 
     protected Movie(Parcel in) {
@@ -93,6 +102,7 @@ public class Movie implements Parcelable {
         voteCount = in.readInt();
         popularity = in.readFloat();
         voteAverage = in.readFloat();
+        this.favored = in.readByte() != 0;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {

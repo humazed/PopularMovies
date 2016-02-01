@@ -69,6 +69,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
                 if (mMovieListActivity.mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putParcelable(MovieDetailFragment.KEY_MOVIE, holder.mMovie);
+                    arguments.putBoolean(MovieDetailFragment.KEY_TWO_PANE, mMovieListActivity.mTwoPane);
                     MovieDetailFragment fragment = new MovieDetailFragment();
                     fragment.setArguments(arguments);
                     mMovieListActivity.getSupportFragmentManager().beginTransaction()
@@ -78,6 +79,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
                     Context context = v.getContext();
                     Intent intent = new Intent(context, MovieDetailActivity.class);
                     intent.putExtra(MovieDetailFragment.KEY_MOVIE, holder.mMovie);
+                    intent.putExtra(MovieDetailFragment.KEY_TWO_PANE, mMovieListActivity.mTwoPane);
 
                     context.startActivity(intent);
                 }

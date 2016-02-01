@@ -48,10 +48,13 @@ import retrofit.Retrofit;
 public class MovieListActivity extends AppCompatActivity {
     private static final String TAG = MovieListActivity.class.getSimpleName();
 
+    @TheMovieDbAPI.SortingOrder String sortBy = TheMovieDbAPI.POPULARITY_DESC;
+
+    public static final String FAV_BUTTON_STATE = "favButtonState";
+
     @Bind(R.id.sort_spinner) Spinner mSortSpinner;
     @Bind(R.id.movie_list) RecyclerView mMovieList;
 
-    @TheMovieDbAPI.SortingOrder String sortBy = TheMovieDbAPI.POPULARITY_DESC;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -102,7 +105,7 @@ public class MovieListActivity extends AppCompatActivity {
         });
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.favourite_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
