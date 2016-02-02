@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.huma.popularmovies.R;
 import com.example.huma.popularmovies.api.TheMovieDbAPI;
+import com.example.huma.popularmovies.db.MoviesDBProvider;
 import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Review;
 import com.example.huma.popularmovies.model.Reviews;
@@ -28,7 +29,6 @@ import com.example.huma.popularmovies.model.Trailer;
 import com.example.huma.popularmovies.model.Trailers;
 import com.example.huma.popularmovies.utils.UiUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -74,12 +74,12 @@ public class MovieDetailFragment extends Fragment {
      */
     private Movie mMovie;
 
-    private boolean mTwoPane;
-
-    boolean isSelected;
-
     private List<Trailer> mTrailers;
     private List<Review> mReviews;
+
+    private boolean mTwoPane;
+
+    private MoviesDBProvider mMoviesDBProvider;
 
 
     /**
@@ -93,6 +93,7 @@ public class MovieDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mMoviesDBProvider = new MoviesDBProvider(getActivity());
 
         if (getArguments().containsKey(KEY_MOVIE)) {
             // Load the content specified by the fragment
@@ -109,7 +110,6 @@ public class MovieDetailFragment extends Fragment {
                 }
             }
         }
-
     }
 
     @Override
@@ -117,11 +117,19 @@ public class MovieDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.movie_detail, container, false);
         ButterKnife.bind(this, rootView);
 
-        if (savedInstanceState != null) {
-            isSelected = savedInstanceState.getBoolean(FAV_BUTTON_STATE, false);
-            mMovieFavoriteButton.setSelected(isSelected);
-            Log.d(TAG, "onCreateView savedInstanceState" + isSelected);
-        } else Log.d(TAG, "onCreateView savedInstanceState " + "null" + isSelected);
+
+        mMovieFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mMovieFavoriteButton.isSelected()) {
+                    mMovieFavoriteButton.setSelected(true);
+                    mMoviesDBProvider.addMovie(mMovie);
+                } else {
+                    mMovieFavoriteButton.setSelected(false);
+                    mMoviesDBProvider.deleteMovie(mMovie);
+                }
+            }
+        });
 
         mTrailsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -133,20 +141,6 @@ public class MovieDetailFragment extends Fragment {
         //show mMovieFavoriteButton when in TwoPane as the floating button is hidden.
         if (mTwoPane) mMovieFavoriteButton.setVisibility(View.VISIBLE);
         else mMovieFavoriteButton.setVisibility(View.INVISIBLE);
-
-        mMovieFavoriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isSelected) {
-                    isSelected = true;
-                    mMovieFavoriteButton.setSelected(true);
-                } else {
-                    isSelected = false;
-                    mMovieFavoriteButton.setSelected(false);
-                }
-            }
-        });
-
 
         // Show movie title as text in a TextView.
         if (mMovie != null) {
@@ -166,15 +160,6 @@ public class MovieDetailFragment extends Fragment {
         Log.d(TAG, "playTrailer " + Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
     }
 
-    public void setMovieFavored(Movie movie, boolean favored) {
-        movie.setFavored(favored);
-        if (favored) {
-            UiUtils.addToFavorites(getActivity(), movie.getId());
-        } else {
-            UiUtils.removeFromFavorites(getActivity(), movie.getId());
-        }
-    }
-
     private void loadMovie(Movie movie) {
         mMovie = movie;
 
@@ -182,7 +167,7 @@ public class MovieDetailFragment extends Fragment {
         mMovieAverageRating.setText(getString(R.string.movie_details_rating, movie.getVoteAverage()));
         mMovieReleaseDate.setText(UiUtils.getDisplayReleaseDate(movie.getReleaseDate()));
         mMovieOverview.setText(movie.getOverview());
-//        mFavoriteButton.setSelected(movie.isFavored());
+        mMovieFavoriteButton.setSelected(mMoviesDBProvider.isFav(movie));
 
         // Poster image
         Glide.with(this)
@@ -202,7 +187,7 @@ public class MovieDetailFragment extends Fragment {
         TheMovieDbAPI dbAPI = retrofit.create(TheMovieDbAPI.class);
         Call<Trailers> trailersCall = dbAPI.getTrailers(movie.getId());
         trailersCall.enqueue(new Callback<Trailers>() {
-            @Override//videoNameView.setText(video.getSite() + ": " + video.getName());
+            @Override
             public void onResponse(Response<Trailers> response, Retrofit retrofit) {
                 if (response.body() != null) {
                     mTrailers = response.body().getResults();
@@ -214,7 +199,6 @@ public class MovieDetailFragment extends Fragment {
                         Trailer trailer = mTrailers.get(i);
                         s[i] = trailer.getSite() + ": " + trailer.getName();
                     }
-                    Log.d(TAG, "onResponse() returned: loadTrails" + Arrays.toString(s));
 
                     UiUtils.setListViewHeightBasedOnItems(mTrailsListView);
 
@@ -269,13 +253,6 @@ public class MovieDetailFragment extends Fragment {
             }
         });
 
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(FAV_BUTTON_STATE, isSelected);
-        Log.d(TAG, "onSaveInstanceState " + isSelected);
     }
 
     @Override

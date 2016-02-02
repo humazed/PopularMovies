@@ -16,6 +16,9 @@ import java.util.List;
 */
 public class Movie implements Parcelable {
 
+    public Movie() {
+    }
+
     @SerializedName("poster_path")
     @Expose
     private String posterPath;

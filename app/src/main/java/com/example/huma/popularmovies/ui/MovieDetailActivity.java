@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.huma.popularmovies.R;
+import com.example.huma.popularmovies.db.MoviesDBProvider;
 import com.example.huma.popularmovies.model.Movie;
 
 import butterknife.Bind;
@@ -35,6 +36,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     @Bind(R.id.favourite_fab) FloatingActionButton mFavouriteFab;
 
     private boolean isSelected;
+    private Movie mMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +52,21 @@ public class MovieDetailActivity extends AppCompatActivity {
         } else Log.d(TAG, "onCreate savedInstanceState" + "null " + isSelected);
 
         //get selected Movie MovieListActivity.
-        Movie mMovie = getIntent().getParcelableExtra(MovieDetailFragment.KEY_MOVIE);
+        mMovie = getIntent().getParcelableExtra(MovieDetailFragment.KEY_MOVIE);
 
+        final MoviesDBProvider provider = new MoviesDBProvider(MovieDetailActivity.this);
 
+        mFavouriteFab.setSelected(provider.isFav(mMovie));
         mFavouriteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: 1/27/2016 star the movie
-                if (!isSelected) {
-                    isSelected = true;
+                if (!mFavouriteFab.isSelected()) {
                     mFavouriteFab.setSelected(true);
+                    provider.addMovie(mMovie);
                 } else {
-                    isSelected = false;
                     mFavouriteFab.setSelected(false);
+                    provider.deleteMovie(mMovie);
                 }
             }
         });

@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.huma.popularmovies.R;
 import com.example.huma.popularmovies.adapter.MoviesRecyclerViewAdapter;
 import com.example.huma.popularmovies.api.TheMovieDbAPI;
+import com.example.huma.popularmovies.db.MoviesDBProvider;
 import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Movies;
 import com.example.huma.popularmovies.utils.UiUtils;
@@ -48,9 +49,6 @@ import retrofit.Retrofit;
 public class MovieListActivity extends AppCompatActivity {
     private static final String TAG = MovieListActivity.class.getSimpleName();
 
-    @TheMovieDbAPI.SortingOrder String sortBy = TheMovieDbAPI.POPULARITY_DESC;
-
-    public static final String FAV_BUTTON_STATE = "favButtonState";
 
     @Bind(R.id.sort_spinner) Spinner mSortSpinner;
     @Bind(R.id.movie_list) RecyclerView mMovieList;
@@ -87,16 +85,15 @@ public class MovieListActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        sortBy = TheMovieDbAPI.POPULARITY_DESC;
+                        update(TheMovieDbAPI.POPULARITY_DESC);
                         break;
                     case 1:
-                        sortBy = TheMovieDbAPI.RATED_DESC;
+                        update(TheMovieDbAPI.RATED_DESC);
                         break;
                     case 2:
-                        // TODO: 1/29/2016 add to fav and save it in sharedPred
+                        updateFromFav();
                         break;
                 }
-                update(sortBy);
             }
 
             @Override
@@ -120,6 +117,11 @@ public class MovieListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+    }
+
+    private void updateFromFav() {
+        MoviesDBProvider provider = new MoviesDBProvider(this);
+        setupRecyclerView(mMovieList, provider.getMovies());
     }
 
     //fetch data form internet and display it.
