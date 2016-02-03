@@ -3,6 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/grid_item_movie_width"
     android:layout_height="@dimen/grid_item_movie_height"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
     <TextView
@@ -21,7 +24,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:contentDescription="@string/movie_image_content_description"
-        android:focusable="false"
+        android:padding="2dp"
         android:scaleType="centerCrop"/>
 
 </FrameLayout>

@@ -69,8 +69,6 @@
             <ImageButton
                 android:id="@+id/movie_favorite_button"
                 style="@style/FavoriteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/movie_poster"
                 android:layout_alignEnd="@+id/linearLayout"
                 android:layout_alignRight="@+id/linearLayout"
@@ -78,8 +76,19 @@
                 android:layout_marginRight="10dp"
                 android:contentDescription="@null"
                 android:tint="@color/colorPrimary"
-                android:visibility="invisible"
+                android:visibility="gone"
                 tools:visibility="visible"/>
+
+            <ImageButton
+                android:id="@+id/share_button"
+                style="@style/Widget.AppCompat.Light.ActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_share_black_24dp"
+                android:layout_alignTop="@+id/movie_favorite_button"
+                android:layout_alignLeft="@+id/linearLayout"
+                android:layout_alignStart="@+id/linearLayout"/>
 
         </RelativeLayout>
 

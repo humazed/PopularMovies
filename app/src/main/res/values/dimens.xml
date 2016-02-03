@@ -16,8 +16,6 @@
     <dimen name="movie_details_poster_top_margin">-16dp</dimen>
     <dimen name="movie_details_poster_left_margin">16dp</dimen>
 
-    <dimen name="movie_details_responsive_width">@dimen/match_parent</dimen>
-    <dimen name="movie_details_anchor_height">@dimen/match_parent</dimen>
     <dimen name="movie_details_margin">0dp</dimen>
     <dimen name="movie_details_content_margin_bottom">0dp</dimen>
 
@@ -48,6 +46,4 @@
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="item_load_more_size">48dp</dimen>
     <dimen name="flexible_space_image_height">300dp</dimen>
-    <item name="match_parent" type="dimen">-1</item>
-    <item name="wrap_content" type="dimen">-2</item>
 </resources>

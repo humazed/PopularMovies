@@ -33,6 +33,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -54,7 +55,6 @@ public class MovieDetailFragment extends Fragment {
      */
     public static final String KEY_MOVIE = "move";
     public static final String KEY_TWO_PANE = "TwoPane";
-    public static final String FAV_BUTTON_STATE = "favButtonState";
 
     @Bind(R.id.movie_poster) ImageView mMoviePoster;
     @Bind(R.id.movie_title) TextView mMovieTitle;
@@ -114,9 +114,8 @@ public class MovieDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.movie_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         ButterKnife.bind(this, rootView);
-
 
         mMovieFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +147,6 @@ public class MovieDetailFragment extends Fragment {
             loadTrails(mMovie);
             loadReviews(mMovie);
         }
-
 
         return rootView;
     }
@@ -253,6 +251,16 @@ public class MovieDetailFragment extends Fragment {
             }
         });
 
+    }
+
+    @OnClick(R.id.share_button)
+    void share() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mMovie.getTitle() +
+                "\nTrailer: " + "http://www.youtube.com/watch?v=" + mTrailers.get(0).getKey());
+        startActivity(shareIntent);
     }
 
     @Override
