@@ -60,7 +60,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         mFavouriteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 1/27/2016 star the movie
                 if (!mFavouriteFab.isSelected()) {
                     mFavouriteFab.setSelected(true);
                     provider.addMovie(mMovie);
