@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.v7.widget.CardView
+    android:id="@+id/book_card"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/grid_item_movie_width"
-    android:layout_height="@dimen/grid_item_movie_height"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/movie_grid_card_width"
+    android:layout_height="wrap_content"
     android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:orientation="vertical">
+    android:foreground="?attr/selectableItemBackground"
+    cardview:cardPreventCornerOverlap="false"
+    cardview:cardUseCompatPadding="true"
+    tools:layout_width="@dimen/movie_grid_card_width">
 
-    <TextView
-        android:id="@+id/item_title"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:ellipsize="end"
-        android:gravity="center|start"
-        android:padding="5dp"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="18sp"/>
 
-    <ImageView
-        android:id="@+id/item_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:contentDescription="@string/movie_image_content_description"
-        android:padding="2dp"
-        android:scaleType="centerCrop"/>
+    <FrameLayout
+        android:layout_width="@dimen/movie_grid_card_width"
+        android:layout_height="@dimen/grid_item_movie_height"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center|start"
+            android:padding="5dp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="18sp"/>
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/movie_image_content_description"
+            android:padding="2dp"
+            android:scaleType="centerCrop"/>
+
+    </FrameLayout>
+</android.support.v7.widget.CardView>

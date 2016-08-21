@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.example.huma.popularmovies.R;
 import com.example.huma.popularmovies.adapter.MoviesRecyclerViewAdapter;
 import com.example.huma.popularmovies.api.TheMovieDbAPI;
-import com.example.huma.popularmovies.db.MoviesDBProvider;
+import com.example.huma.popularmovies.db.MoviesDBProviderUtils;
 import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Movies;
 import com.example.huma.popularmovies.utils.UiUtils;
@@ -109,7 +109,7 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
     private void updateFromFav() {
-        MoviesDBProvider provider = new MoviesDBProvider(this);
+        MoviesDBProviderUtils provider = new MoviesDBProviderUtils(this);
         setupRecyclerView(mMovieList, provider.getMovies());
     }
 
@@ -142,10 +142,13 @@ public class MovieListActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Movie> movies) {
         recyclerView.setAdapter(new MoviesRecyclerViewAdapter(this, movies));
 //        recyclerView.setLayoutManager(new GridLayoutManager(this, mTwoPane ? 2 : 3));
+
         recyclerView.setLayoutManager(new AutoFitRecyclerView(this, (int) UiUtils.pxFromDp(this, 100f)));
     }
 
-
+    ///////////////////////////////////////////////////////////////////////////
+    // MyAdapter
+    ///////////////////////////////////////////////////////////////////////////
     private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
         private final Helper mDropDownHelper;
 
@@ -183,8 +186,10 @@ public class MovieListActivity extends AppCompatActivity {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // AutoFitRecyclerView
+    ///////////////////////////////////////////////////////////////////////////
     private class AutoFitRecyclerView extends GridLayoutManager {
-
         private int minItemWidth;
 
         public AutoFitRecyclerView(Context context, int minItemWidth) {

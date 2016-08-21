@@ -23,12 +23,18 @@
         <activity
             android:name=".ui.MovieDetailActivity"
             android:label="@string/title_movie_detail"
-            android:parentActivityName=".MovieListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MovieListActivity"/>
         </activity>
+
+        <provider
+            android:name=".db.MovieContentProvider"
+            android:authorities="com.example.android.popularMovies.app"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
     </application>
 
 </manifest>

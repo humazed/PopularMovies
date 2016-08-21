@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.huma.popularmovies.R;
-import com.example.huma.popularmovies.db.MoviesDBProvider;
+import com.example.huma.popularmovies.db.MoviesDBProviderUtils;
 import com.example.huma.popularmovies.model.Movie;
 
 import butterknife.Bind;
@@ -54,7 +54,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         //get selected Movie MovieListActivity.
         mMovie = getIntent().getParcelableExtra(MovieDetailFragment.KEY_MOVIE);
 
-        final MoviesDBProvider provider = new MoviesDBProvider(MovieDetailActivity.this);
+        final MoviesDBProviderUtils provider = new MoviesDBProviderUtils(MovieDetailActivity.this);
+
+        getSupportActionBar().setTitle(mMovie.getTitle());
 
         mFavouriteFab.setSelected(provider.isFav(mMovie));
         mFavouriteFab.setOnClickListener(new View.OnClickListener() {

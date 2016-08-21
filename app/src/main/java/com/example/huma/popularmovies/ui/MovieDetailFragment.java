@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.huma.popularmovies.R;
 import com.example.huma.popularmovies.api.TheMovieDbAPI;
-import com.example.huma.popularmovies.db.MoviesDBProvider;
+import com.example.huma.popularmovies.db.MoviesDBProviderUtils;
 import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Review;
 import com.example.huma.popularmovies.model.Reviews;
@@ -79,7 +79,7 @@ public class MovieDetailFragment extends Fragment {
 
     private boolean mTwoPane;
 
-    private MoviesDBProvider mMoviesDBProvider;
+    private MoviesDBProviderUtils mMoviesDBProviderUtils;
 
 
     /**
@@ -93,7 +93,7 @@ public class MovieDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mMoviesDBProvider = new MoviesDBProvider(getActivity());
+        mMoviesDBProviderUtils = new MoviesDBProviderUtils(getActivity());
 
         if (getArguments().containsKey(KEY_MOVIE)) {
             // Load the content specified by the fragment
@@ -122,10 +122,10 @@ public class MovieDetailFragment extends Fragment {
             public void onClick(View v) {
                 if (!mMovieFavoriteButton.isSelected()) {
                     mMovieFavoriteButton.setSelected(true);
-                    mMoviesDBProvider.addMovie(mMovie);
+                    mMoviesDBProviderUtils.addMovie(mMovie);
                 } else {
                     mMovieFavoriteButton.setSelected(false);
-                    mMoviesDBProvider.deleteMovie(mMovie);
+                    mMoviesDBProviderUtils.deleteMovie(mMovie);
                 }
             }
         });
@@ -165,7 +165,7 @@ public class MovieDetailFragment extends Fragment {
         mMovieAverageRating.setText(getString(R.string.movie_details_rating, movie.getVoteAverage()));
         mMovieReleaseDate.setText(UiUtils.getDisplayReleaseDate(movie.getReleaseDate()));
         mMovieOverview.setText(movie.getOverview());
-        mMovieFavoriteButton.setSelected(mMoviesDBProvider.isFav(movie));
+        mMovieFavoriteButton.setSelected(mMoviesDBProviderUtils.isFav(movie));
 
         // Poster image
         Glide.with(this)
