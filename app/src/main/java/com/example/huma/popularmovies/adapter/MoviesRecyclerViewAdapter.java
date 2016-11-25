@@ -31,8 +31,8 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     private MovieListActivity mMovieListActivity;
     private final List<Movie> mMovies;
 
-    public MoviesRecyclerViewAdapter(MovieListActivity MovieListActivity, List<Movie> movies) {
-        mMovieListActivity = MovieListActivity;
+    public MoviesRecyclerViewAdapter(MovieListActivity movieListActivity, List<Movie> movies) {
+        mMovieListActivity = movieListActivity;
         mMovies = movies;
     }
 
@@ -88,14 +88,14 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public Movie mMovie;
-        public View mView;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        Movie mMovie;
+        View mView;
         @Bind(R.id.item_image) ImageView mItemImage;
         @Bind(R.id.item_title) TextView mItemTitle;
 
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             mView = view;
