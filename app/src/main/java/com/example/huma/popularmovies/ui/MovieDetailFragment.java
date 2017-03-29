@@ -35,6 +35,7 @@ import butterknife.Bind;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -82,6 +83,8 @@ public class MovieDetailFragment extends Fragment {
 
     private MoviesDBProviderUtils mMoviesDBProviderUtils;
 
+    private Unbinder unbinder;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -116,7 +119,7 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         mMovieFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -267,6 +270,6 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 }
