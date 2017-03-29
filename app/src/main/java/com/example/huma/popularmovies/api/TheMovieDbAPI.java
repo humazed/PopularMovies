@@ -6,13 +6,14 @@ import com.example.huma.popularmovies.model.Movies;
 import com.example.huma.popularmovies.model.Reviews;
 import com.example.huma.popularmovies.model.Trailers;
 
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface TheMovieDbAPI {
     String API_KEY = "397b65dc1146c99252660a80e3d34c6d";
+    String BASE_URL = "http://api.themoviedb.org/3/";
 
 //    String  SORT_BY_PARAM = "sort_by",
 //            API_KEY_PARAM = "api_key";
@@ -22,7 +23,6 @@ public interface TheMovieDbAPI {
             POPULARITY_DESC = "popularity.desc",
             RATED_ASC = "vote_count.asc",
             RATED_DESC = "vote_count.desc";
-    String BASE_URL = "http://api.themoviedb.org/3/";
 
     //http://api.themoviedb.org/3/discover/movie?api_key=397b65dc1146c99252660a80e3d34c6d&sort_by=popularity.desc
     @GET("discover/movie?api_key=" + API_KEY)

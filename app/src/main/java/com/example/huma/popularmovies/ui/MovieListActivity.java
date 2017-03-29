@@ -30,11 +30,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * An activity representing a list of movies. This activity
@@ -126,14 +126,13 @@ public class MovieListActivity extends AppCompatActivity {
         Call<Movies> moviesCall = dbAPI.getMovies(sortBy);
         moviesCall.enqueue(new Callback<Movies>() {
             @Override
-            public void onResponse(Response<Movies> response, Retrofit retrofit) {
+            public void onResponse(Call<Movies> call, Response<Movies> response) {
                 List<Movie> movies = response.body().getResults();
                 setupRecyclerView(mMovieList, movies);
             }
 
             @Override
-            public void onFailure(Throwable t) {
-
+            public void onFailure(Call<Movies> call, Throwable t) {
             }
         });
     }

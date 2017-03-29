@@ -31,16 +31,15 @@ import com.example.huma.popularmovies.utils.UiUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A fragment representing a single movie detail screen.
@@ -190,7 +189,7 @@ public class MovieDetailFragment extends Fragment {
         Call<Trailers> trailersCall = dbAPI.getTrailers(movie.getId());
         trailersCall.enqueue(new Callback<Trailers>() {
             @Override
-            public void onResponse(Response<Trailers> response, Retrofit retrofit) {
+            public void onResponse(Call<Trailers> call, Response<Trailers> response) {
                 if (response.body() != null) {
                     mTrailers = response.body().getResults();
                 }
@@ -214,8 +213,7 @@ public class MovieDetailFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Throwable t) {
-
+            public void onFailure(Call<Trailers> call, Throwable t) {
             }
         });
 
@@ -231,7 +229,7 @@ public class MovieDetailFragment extends Fragment {
         Call<Reviews> trailersCall = dbAPI.getReviews(movie.getId());
         trailersCall.enqueue(new Callback<Reviews>() {
             @Override
-            public void onResponse(Response<Reviews> response, Retrofit retrofit) {
+            public void onResponse(Call<Reviews> call, Response<Reviews> response) {
                 if (response.body() != null) {
                     mReviews = response.body().getResults();
                 }
@@ -250,8 +248,7 @@ public class MovieDetailFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Throwable t) {
-
+            public void onFailure(Call<Reviews> call, Throwable t) {
             }
         });
 
