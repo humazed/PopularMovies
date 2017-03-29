@@ -48,8 +48,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             isSelected = savedInstanceState.getBoolean(FAV_BUTTON_STATE);
             mFavouriteFab.setSelected(isSelected);
-            Log.d(TAG, "onCreate savedInstanceState" + isSelected);
-        } else Log.d(TAG, "onCreate savedInstanceState" + "null " + isSelected);
+        }
 
         //get selected Movie MovieListActivity.
         mMovie = getIntent().getParcelableExtra(MovieDetailFragment.KEY_MOVIE);
