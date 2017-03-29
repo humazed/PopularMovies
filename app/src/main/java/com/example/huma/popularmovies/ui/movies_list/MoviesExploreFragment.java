@@ -1,9 +1,10 @@
 package com.example.huma.popularmovies.ui.movies_list;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,15 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.huma.popularmovies.R;
-import com.example.huma.popularmovies.adapter.AutoFitRecyclerView;
-import com.example.huma.popularmovies.adapter.MoviesRecyclerViewAdapter;
+import com.example.huma.popularmovies.adapter.MoviesAdapter;
 import com.example.huma.popularmovies.api.TheMovieDbAPI;
 import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Movies;
-import com.example.huma.popularmovies.utils.UiUtils;
+import com.example.huma.popularmovies.ui.MovieDetailActivity;
+import com.example.huma.popularmovies.ui.MovieDetailFragment;
 
 import java.util.List;
 
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -33,9 +35,11 @@ public class MoviesExploreFragment extends Fragment {
     private static final String TAG = MoviesExploreFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
 
+    Unbinder unbinder;
+
     @BindView(R.id.explore_recyclerView) RecyclerView mExploreRecyclerView;
 
-    Unbinder unbinder;
+    @BindBool(R.bool.isTablet) boolean isTablet;
 
     private String mParam1;
 
@@ -86,7 +90,7 @@ public class MoviesExploreFragment extends Fragment {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
                 List<Movie> movies = response.body().getResults();
-                setupRecyclerView(mExploreRecyclerView, movies);
+                setupRecyclerView(movies);
             }
 
             @Override
@@ -95,11 +99,32 @@ public class MoviesExploreFragment extends Fragment {
         });
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Movie> movies) {
-        recyclerView.setAdapter(new MoviesRecyclerViewAdapter(getActivity(), movies));
-//        recyclerView.setLayoutManager(new GridLayoutManager(this, mTwoPane ? 2 : 3));
+    private void setupRecyclerView(List<Movie> movies) {
+        MoviesAdapter adapter = new MoviesAdapter(movies);
 
-        recyclerView.setLayoutManager(new AutoFitRecyclerView(getActivity(), (int) UiUtils.pxFromDp(getActivity(), 100f)));
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            Log.d(TAG, "setupRecyclerView ");
+            Movie movie = movies.get(position);
+            if (isTablet) {
+                Bundle arguments = new Bundle();
+                arguments.putParcelable(MovieDetailFragment.KEY_MOVIE, movie);
+                arguments.putBoolean(MovieDetailFragment.KEY_TWO_PANE, true);
+                MovieDetailFragment fragment = new MovieDetailFragment();
+                fragment.setArguments(arguments);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.movie_detail_container, fragment)
+                        .commit();
+            } else {
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+                intent.putExtra(MovieDetailFragment.KEY_MOVIE, movie);
+                intent.putExtra(MovieDetailFragment.KEY_TWO_PANE, false);
+
+                getActivity().startActivity(intent);
+            }
+        });
+
+        mExploreRecyclerView.setAdapter(adapter);
+        mExploreRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }
 
 
