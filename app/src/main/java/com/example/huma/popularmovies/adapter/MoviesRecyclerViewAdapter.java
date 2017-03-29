@@ -19,7 +19,7 @@ import com.example.huma.popularmovies.ui.MovieListActivity;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -91,8 +91,8 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
     class ViewHolder extends RecyclerView.ViewHolder {
         Movie mMovie;
         View mView;
-        @Bind(R.id.item_image) ImageView mItemImage;
-        @Bind(R.id.item_title) TextView mItemTitle;
+        @BindView(R.id.item_image) ImageView mItemImage;
+        @BindView(R.id.item_title) TextView mItemTitle;
 
 
         ViewHolder(View view) {

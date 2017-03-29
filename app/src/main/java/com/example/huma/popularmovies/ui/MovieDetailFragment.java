@@ -32,6 +32,7 @@ import com.example.huma.popularmovies.utils.UiUtils;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.Call;
@@ -56,17 +57,17 @@ public class MovieDetailFragment extends Fragment {
     public static final String KEY_MOVIE = "move";
     public static final String KEY_TWO_PANE = "TwoPane";
 
-    @Bind(R.id.movie_poster) ImageView mMoviePoster;
-    @Bind(R.id.movie_title) TextView mMovieTitle;
-    @Bind(R.id.movie_release_date) TextView mMovieReleaseDate;
-    @Bind(R.id.movie_average_rating) TextView mMovieAverageRating;
-    @Bind(R.id.movie_overview) TextView mMovieOverview;
-    @Bind(R.id.trails_list_view) ListView mTrailsListView;
-    @Bind(R.id.movie_detail) RelativeLayout mMovieDetail;
-    @Bind(R.id.movie_videos_container) LinearLayout mMovieVideosContainer;
-    @Bind(R.id.review_list_view) ListView mReviewListView;
-    @Bind(R.id.movie_reviews_container) LinearLayout mMovieReviewsContainer;
-    @Bind(R.id.movie_favorite_button) ImageButton mMovieFavoriteButton;
+    @BindView(R.id.movie_poster) ImageView mMoviePoster;
+    @BindView(R.id.movie_title) TextView mMovieTitle;
+    @BindView(R.id.movie_release_date) TextView mMovieReleaseDate;
+    @BindView(R.id.movie_average_rating) TextView mMovieAverageRating;
+    @BindView(R.id.movie_overview) TextView mMovieOverview;
+    @BindView(R.id.trails_list_view) ListView mTrailsListView;
+    @BindView(R.id.movie_detail) RelativeLayout mMovieDetail;
+    @BindView(R.id.movie_videos_container) LinearLayout mMovieVideosContainer;
+    @BindView(R.id.review_list_view) ListView mReviewListView;
+    @BindView(R.id.movie_reviews_container) LinearLayout mMovieReviewsContainer;
+    @BindView(R.id.movie_favorite_button) ImageButton mMovieFavoriteButton;
 
 
     /**

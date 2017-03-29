@@ -28,7 +28,7 @@ import com.example.huma.popularmovies.utils.UiUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit.Call;
 import retrofit.Callback;
@@ -47,9 +47,8 @@ import retrofit.Retrofit;
 public class MovieListActivity extends AppCompatActivity {
     private static final String TAG = MovieListActivity.class.getSimpleName();
 
-
-    @Bind(R.id.sort_spinner) Spinner mSortSpinner;
-    @Bind(R.id.movie_list) RecyclerView mMovieList;
+    @BindView(R.id.sort_spinner) Spinner mSortSpinner;
+    @BindView(R.id.movie_list) RecyclerView mMovieList;
 
 
     /**

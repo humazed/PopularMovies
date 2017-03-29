@@ -17,7 +17,7 @@ import com.example.huma.popularmovies.R;
 import com.example.huma.popularmovies.db.MoviesDBProviderUtils;
 import com.example.huma.popularmovies.model.Movie;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -31,9 +31,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     public static final String FAV_BUTTON_STATE = "favButtonState";
 
-    @Bind(R.id.backdrop_path_image_view) ImageView mBackdropPathImageView;
-    @Bind(R.id.detail_toolbar) Toolbar mDetailToolbar;
-    @Bind(R.id.favourite_fab) FloatingActionButton mFavouriteFab;
+    @BindView(R.id.backdrop_path_image_view) ImageView mBackdropPathImageView;
+    @BindView(R.id.detail_toolbar) Toolbar mDetailToolbar;
+    @BindView(R.id.favourite_fab) FloatingActionButton mFavouriteFab;
 
     private boolean isSelected;
     private Movie mMovie;
