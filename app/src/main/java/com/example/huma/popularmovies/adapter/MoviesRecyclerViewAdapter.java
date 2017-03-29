@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.huma.popularmovies.R;
 import com.example.huma.popularmovies.model.Movie;
-import com.example.huma.popularmovies.ui.MovieDetailActivity;
 import com.example.huma.popularmovies.ui.MovieDetailFragment;
+import com.example.huma.popularmovies.ui.movie_details.MovieDetailsActivity;
 
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
 //                        .commit();
             } else {
                 Context context = v.getContext();
-                Intent intent = new Intent(context, MovieDetailActivity.class);
+                Intent intent = new Intent(context, MovieDetailsActivity.class);
                 intent.putExtra(MovieDetailFragment.KEY_MOVIE, holder.mMovie);
                 intent.putExtra(MovieDetailFragment.KEY_TWO_PANE, false);
 

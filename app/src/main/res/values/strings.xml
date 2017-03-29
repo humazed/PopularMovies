@@ -8,6 +8,15 @@
     <string name="favourite_tab_title">Favourite</string>
     <!--MoviesListActivity end-->
 
+    <!--MovieDetailActivity start-->
+    <string name="read_more"><u>Read more…</u></string>
+    <string name="episode_tracker_title">Seasons</string>
+    <string name="products_title">Awesome Merchandise</string>
+    <string name="powered_by_amazon">Powered by Amazon</string>
+    <string name="you_may_also_like">You may also like</string>
+
+    <!--MovieDetailActivity end-->
+
 
     <string name="placeholder_movie_plot">Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.
         Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.
@@ -25,6 +34,8 @@
     <string name="title_activity_movies_list">MoviesListActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="btn_follow">Follow</string>
+    <string name="btn_unfollow">UnFollow</string>
 
 
 </resources>

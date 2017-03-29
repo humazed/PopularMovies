@@ -47,6 +47,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.movie_details.MovieDetailsActivity"
+            android:label="@string/title_activity_movies_list">
+        </activity>
     </application>
 
 </manifest>

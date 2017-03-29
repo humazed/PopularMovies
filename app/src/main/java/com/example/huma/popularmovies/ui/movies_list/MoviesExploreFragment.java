@@ -16,8 +16,8 @@ import com.example.huma.popularmovies.adapter.MoviesAdapter;
 import com.example.huma.popularmovies.api.TheMovieDbAPI;
 import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Movies;
-import com.example.huma.popularmovies.ui.MovieDetailActivity;
 import com.example.huma.popularmovies.ui.MovieDetailFragment;
+import com.example.huma.popularmovies.ui.movie_details.MovieDetailsActivity;
 
 import java.util.List;
 
@@ -115,7 +115,7 @@ public class MoviesExploreFragment extends Fragment {
                         .replace(R.id.movie_detail_container, fragment)
                         .commit();
             } else {
-                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra(MovieDetailFragment.KEY_MOVIE, movie);
                 intent.putExtra(MovieDetailFragment.KEY_TWO_PANE, false);
 
