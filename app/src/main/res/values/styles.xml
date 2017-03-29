@@ -1,30 +1,18 @@
 <resources>
-
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:dialogTheme">@style/DialogTheme</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+    <style name="DialogTheme" parent="@style/Theme.AppCompat.Dialog.Alert"/>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
-    <!--<style name="MovieItem" parent="CardView">-->
-        <!--<item name="android:layout_margin">@dimen/item_spacing_half</item>-->
-        <!--<item name="android:clickable">true</item>-->
-        <!--<item name="android:foreground">?android:attr/selectableItemBackground</item>-->
-        <!--&lt;!&ndash;<item name="cardPreventCornerOverlap">false</item>&ndash;&gt;-->
-        <!--<item name="cardElevation">4dp</item>-->
-    <!--</style>-->
-
 
     <!-- Movie details -->
     <style name="MovieDetailSectionHeader">
@@ -34,12 +22,10 @@
         <!--<item name="android:background">@drawable/movie_detail_section_separator</item>-->
     </style>
 
-
     <style name="FavoriteButton" parent="Widget.AppCompat.Light.ActionButton">
         <item name="android:layout_height">@dimen/abc_action_button_min_height_material</item>
         <item name="android:layout_width">@dimen/abc_action_button_min_height_material</item>
         <item name="android:src">@drawable/selector_favorite_button</item>
     </style>
-
 
 </resources>

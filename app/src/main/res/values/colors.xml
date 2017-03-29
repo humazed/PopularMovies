@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
+    <color name="colorAccent">#ffecc315</color>
+    <color name="colorPrimary">#ff1b1b1b</color>
+    <color name="colorPrimaryDark">#ff0d0d0d</color>
 
     <color name="body_text_1">#de000000</color>
     <color name="body_text_2">#8a000000</color>
     <color name="body_text_3">#60000000</color>
 
-
     <color name="list_dropdown_divider_color">#92a3a3a3</color>
+
+    <color name="cardview_dark_background">#ff424242</color>
+    <color name="cardview_light_background">#ffffffff</color>
+    <color name="cardview_shadow_end_color">#03000000</color>
+    <color name="cardview_shadow_start_color">#37000000</color>
+    <color name="disabled">#ff868686</color>
+    <color name="donation_package">#ff0d47a1</color>
+    <color name="fab_background">#ffd32f2f</color>
+    <color name="reminder_timer_background">#ff000000</color>
+    <color name="tv_show_red">#ffd73424</color>
 
 </resources>

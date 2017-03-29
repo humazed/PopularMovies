@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.huma.popularmovies.R;
+import com.example.huma.popularmovies.adapter.AutoFitRecyclerView;
 import com.example.huma.popularmovies.adapter.MoviesRecyclerViewAdapter;
 import com.example.huma.popularmovies.api.TheMovieDbAPI;
 import com.example.huma.popularmovies.db.MoviesDBProviderUtils;
@@ -50,10 +50,8 @@ public class MovieListActivity extends AppCompatActivity {
     @BindView(R.id.sort_spinner) Spinner mSortSpinner;
     @BindView(R.id.movie_list) RecyclerView mMovieList;
 
-
     /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
+     * Whether or not the activity is in two-pane mode, i.e. running on a tablet device.
      */
     public boolean mTwoPane;
 
@@ -62,7 +60,6 @@ public class MovieListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
         ButterKnife.bind(this);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -183,30 +180,4 @@ public class MovieListActivity extends AppCompatActivity {
             mDropDownHelper.setDropDownViewTheme(theme);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // AutoFitRecyclerView
-    ///////////////////////////////////////////////////////////////////////////
-    private class AutoFitRecyclerView extends GridLayoutManager {
-        private int minItemWidth;
-
-        public AutoFitRecyclerView(Context context, int minItemWidth) {
-            super(context, 1);
-            this.minItemWidth = minItemWidth;
-        }
-
-        @Override
-        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-            updateSpanCount();
-            super.onLayoutChildren(recycler, state);
-        }
-
-        private void updateSpanCount() {
-            int spanCount = getWidth() / minItemWidth;
-            if (spanCount < 1) spanCount = 1;
-            if (spanCount > 4) spanCount = 4;
-            this.setSpanCount(spanCount);
-        }
-    }
-
 }

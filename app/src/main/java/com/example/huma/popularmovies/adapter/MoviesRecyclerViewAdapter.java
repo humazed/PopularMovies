@@ -15,7 +15,6 @@ import com.example.huma.popularmovies.R;
 import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.ui.MovieDetailActivity;
 import com.example.huma.popularmovies.ui.MovieDetailFragment;
-import com.example.huma.popularmovies.ui.MovieListActivity;
 
 import java.util.List;
 
@@ -28,11 +27,11 @@ import butterknife.ButterKnife;
 public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder> {
     private static final String TAG = MoviesRecyclerViewAdapter.class.getSimpleName();
 
-    private MovieListActivity mMovieListActivity;
+    private Context mContext;
     private final List<Movie> mMovies;
 
-    public MoviesRecyclerViewAdapter(MovieListActivity movieListActivity, List<Movie> movies) {
-        mMovieListActivity = movieListActivity;
+    public MoviesRecyclerViewAdapter(Context context, List<Movie> movies) {
+        mContext = context;
         mMovies = movies;
     }
 
@@ -50,12 +49,14 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        boolean isTablet = mContext.getResources().getBoolean(R.bool.isTablet);
+
         holder.mMovie = mMovies.get(position);
 
         holder.mItemTitle.setText(mMovies.get(position).getOriginalTitle());
 //        Log.d(TAG, "onBindViewHolder " + "http://image.tmdb.org/t/p/w185/" + holder.mMovie.getPosterPath());
 
-        Glide.with(mMovieListActivity)
+        Glide.with(mContext)
 //                .load("http://image.tmdb.org/t/p/w185//fYzpM9GmpBlIC893fNjoWCwE24H.jpg")
                 .load("http://image.tmdb.org/t/p/w185/" + holder.mMovie.getPosterPath())
                 .centerCrop()
@@ -63,26 +64,23 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
                 .crossFade()
                 .into(holder.mItemImage);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mMovieListActivity.mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putParcelable(MovieDetailFragment.KEY_MOVIE, holder.mMovie);
-                    arguments.putBoolean(MovieDetailFragment.KEY_TWO_PANE, mMovieListActivity.mTwoPane);
-                    MovieDetailFragment fragment = new MovieDetailFragment();
-                    fragment.setArguments(arguments);
-                    mMovieListActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.movie_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, MovieDetailActivity.class);
-                    intent.putExtra(MovieDetailFragment.KEY_MOVIE, holder.mMovie);
-                    intent.putExtra(MovieDetailFragment.KEY_TWO_PANE, mMovieListActivity.mTwoPane);
+        holder.mView.setOnClickListener(v -> {
+            if (isTablet) {
+                Bundle arguments = new Bundle();
+                arguments.putParcelable(MovieDetailFragment.KEY_MOVIE, holder.mMovie);
+                arguments.putBoolean(MovieDetailFragment.KEY_TWO_PANE, true);
+                MovieDetailFragment fragment = new MovieDetailFragment();
+                fragment.setArguments(arguments);
+//                mContext.getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.movie_detail_container, fragment)
+//                        .commit();
+            } else {
+                Context context = v.getContext();
+                Intent intent = new Intent(context, MovieDetailActivity.class);
+                intent.putExtra(MovieDetailFragment.KEY_MOVIE, holder.mMovie);
+                intent.putExtra(MovieDetailFragment.KEY_TWO_PANE, false);
 
-                    context.startActivity(intent);
-                }
+                context.startActivity(intent);
             }
         });
     }
