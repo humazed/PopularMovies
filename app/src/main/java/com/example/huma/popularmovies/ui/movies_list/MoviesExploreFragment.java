@@ -16,8 +16,8 @@ import com.example.huma.popularmovies.adapter.MoviesAdapter;
 import com.example.huma.popularmovies.api.TheMovieDbAPI;
 import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Movies;
-import com.example.huma.popularmovies.ui.MovieDetailFragment;
 import com.example.huma.popularmovies.ui.movie_details.MovieDetailsActivity;
+import com.example.huma.popularmovies.ui.movie_details.MovieDetailsFragment;
 
 import java.util.List;
 
@@ -107,17 +107,17 @@ public class MoviesExploreFragment extends Fragment {
             Movie movie = movies.get(position);
             if (isTablet) {
                 Bundle arguments = new Bundle();
-                arguments.putParcelable(MovieDetailFragment.KEY_MOVIE, movie);
-                arguments.putBoolean(MovieDetailFragment.KEY_TWO_PANE, true);
-                MovieDetailFragment fragment = new MovieDetailFragment();
+                arguments.putParcelable(MovieDetailsFragment.KEY_MOVIE, movie);
+                arguments.putBoolean(MovieDetailsFragment.KEY_TWO_PANE, true);
+                MovieDetailsFragment fragment = new MovieDetailsFragment();
                 fragment.setArguments(arguments);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.movie_detail_container, fragment)
                         .commit();
             } else {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-                intent.putExtra(MovieDetailFragment.KEY_MOVIE, movie);
-                intent.putExtra(MovieDetailFragment.KEY_TWO_PANE, false);
+                intent.putExtra(MovieDetailsFragment.KEY_MOVIE, movie);
+                intent.putExtra(MovieDetailsFragment.KEY_TWO_PANE, false);
 
                 getActivity().startActivity(intent);
             }

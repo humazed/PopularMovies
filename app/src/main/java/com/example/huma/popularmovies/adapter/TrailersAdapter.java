@@ -37,8 +37,14 @@ public class TrailersAdapter extends BaseQuickAdapter<Trailer, BaseViewHolder> {
                 .crossFade()
                 .into(thumbnailImageView);
 
-        thumbnailImageView.setOnClickListener(v ->
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer.getTrailerUrl()))));
+        thumbnailImageView.setOnClickListener(v -> playTrailer(trailer));
+    }
+
+    private void playTrailer(Trailer trailer) {
+        if (trailer.getSite().equals(Trailer.SITE_YOUTUBE))
+            mContext.startActivity(new Intent(
+                    Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey())));
+        Log.d(TAG, "playTrailer " + Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
     }
 }
 

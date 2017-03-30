@@ -9,8 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.huma.popularmovies.R;
-import com.example.huma.popularmovies.ui.MovieDetailFragment;
-import com.example.huma.popularmovies.ui.MovieListActivity;
+import com.example.huma.popularmovies.ui.movies_list.MoviesListActivity;
 
 import butterknife.ButterKnife;
 
@@ -50,7 +49,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             // using a fragment transaction.
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.movie_detail_container, MovieDetailsFragment.newInstance(
-                            getIntent().getParcelableExtra(MovieDetailFragment.KEY_MOVIE)))
+                            getIntent().getParcelableExtra(MovieDetailsFragment.KEY_MOVIE)))
                     .commit();
             Log.d(TAG, "onCreate " + "inside");
         }
@@ -67,7 +66,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            NavUtils.navigateUpTo(this, new Intent(this, MovieListActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, MoviesListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

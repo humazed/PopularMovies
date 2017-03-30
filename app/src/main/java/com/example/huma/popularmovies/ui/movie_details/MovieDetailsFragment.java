@@ -1,5 +1,6 @@
 package com.example.huma.popularmovies.ui.movie_details;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -47,6 +48,8 @@ public class MovieDetailsFragment extends Fragment {
     private static final String TAG = MovieDetailsFragment.class.getSimpleName();
     private static final String ARG_MOVIE = "movie";
     public static final String FAV_BUTTON_STATE = "favButtonState";
+    public static final String KEY_MOVIE = "move";
+    public static final String KEY_TWO_PANE = "TwoPane";
 
     @BindView(R.id.backdrop_imageView) ImageView mBackdropImageView;
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -216,6 +219,15 @@ public class MovieDetailsFragment extends Fragment {
         });
 
     }
+
+    void share() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mMovie.getTitle());
+        startActivity(shareIntent);
+    }
+
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
