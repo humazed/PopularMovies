@@ -10,7 +10,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <provider
             android:name=".db.MovieContentProvider"
             android:authorities="com.example.android.popularMovies.app"
@@ -27,11 +26,18 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.movie_details.MovieDetailsActivity"
             android:label="@string/title_activity_movies_list">
-        </activity
-            >
+        </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ui.movies_list.MoviesListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.huma.popularmovies.ui.movies_list.MoviesListActivity"/>
+        </activity>
     </application>
+
 </manifest>

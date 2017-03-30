@@ -21,6 +21,20 @@
     <!--MovieDetailActivity end-->
 
 
+    <!--SettingsActivity start-->
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="pref_title_movies_sort">Sort movies by</string>
+    <string-array name="pref_sort_mode_titles">
+        <item>Most popular</item>
+        <item>Highest rated</item>
+    </string-array>
+    <string-array name="pref_sort_mode_values">
+        <item>popular</item>
+        <item>top_rated</item>
+    </string-array>
+    <!--SettingsActivity end-->
+
     <string name="placeholder_movie_plot">Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.
         Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.
     </string>

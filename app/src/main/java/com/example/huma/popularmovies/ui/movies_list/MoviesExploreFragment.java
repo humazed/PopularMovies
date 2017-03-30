@@ -68,7 +68,7 @@ public class MoviesExploreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movies_explore, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        update(TheMovieDbAPI.POPULARITY_DESC);
+        update(TheMovieDbAPI.TOP_RATED);
 
         return view;
     }
@@ -95,6 +95,7 @@ public class MoviesExploreFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Movies> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
             }
         });
     }
