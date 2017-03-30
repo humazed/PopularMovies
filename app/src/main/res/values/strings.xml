@@ -36,6 +36,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="btn_follow">Follow</string>
     <string name="btn_unfollow">UnFollow</string>
+    <string name="read_less">Read less</string>
 
 
 </resources>

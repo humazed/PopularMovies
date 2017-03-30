@@ -68,7 +68,7 @@ public class MoviesExploreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movies_explore, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        update(TheMovieDbAPI.POPULARITY_ASC);
+        update(TheMovieDbAPI.POPULARITY_DESC);
 
         return view;
     }
@@ -103,7 +103,7 @@ public class MoviesExploreFragment extends Fragment {
         MoviesAdapter adapter = new MoviesAdapter(movies);
 
         adapter.setOnItemClickListener((adapter1, view, position) -> {
-            Log.d(TAG, "setupRecyclerView ");
+            Log.d(TAG, "setupRecyclerView " + "isTablet: " + isTablet);
             Movie movie = movies.get(position);
             if (isTablet) {
                 Bundle arguments = new Bundle();

@@ -45,7 +45,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindView(R.id.collapsible_toolbar) CollapsingToolbarLayout mCollapsibleToolbar;
     @BindView(R.id.app_bar) AppBarLayout mAppBar;
     @BindView(R.id.follow_button) Button mFollowButton;
-    @BindView(R.id.tv_show_poster) ImageView mTvShowPoster;
+    @BindView(R.id.poster_imageView) ImageView mPosterImageView;
     @BindView(R.id.title_textView) TextView mTitleTextView;
     @BindView(R.id.state_textView) TextView mStateTextView;
     @BindView(R.id.description_textView) ExpandableTextView mDescriptionTextView;
@@ -58,12 +58,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindView(R.id.scroll_view) NestedScrollView mScrollView;
     @BindView(R.id.coordinator) CoordinatorLayout mCoordinator;
 
-//    @BindView(R.id.backdrop_path_image_view) ImageView mBackdropPathImageView;
-//    @BindView(R.id.detail_toolbar) Toolbar mDetailToolbar;
-//    @BindView(R.id.favourite_fab) FloatingActionButton mFavouriteFab;
-
-    private boolean isSelected;
-    private Movie mMovie;
+    private MoviesDBProviderUtils mProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,40 +68,17 @@ public class MovieDetailsActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         if (savedInstanceState != null) {
-            isSelected = savedInstanceState.getBoolean(FAV_BUTTON_STATE);
+            boolean isSelected = savedInstanceState.getBoolean(FAV_BUTTON_STATE);
             mFollowButton.setSelected(isSelected);
+            mFollowButton.setText(isSelected ? R.string.btn_unfollow : R.string.btn_follow);
         }
 
-        //get selected Movie MovieListActivity.
-        mMovie = getIntent().getParcelableExtra(MovieDetailFragment.KEY_MOVIE);
+        mProvider = new MoviesDBProviderUtils(MovieDetailsActivity.this);
+        Movie movie = getIntent().getParcelableExtra(MovieDetailFragment.KEY_MOVIE);
 
-        final MoviesDBProviderUtils provider = new MoviesDBProviderUtils(MovieDetailsActivity.this);
+        getSupportActionBar().setTitle(movie.getTitle());
 
-        getSupportActionBar().setTitle(mMovie.getTitle());
-
-        mFollowButton.setSelected(provider.isFav(mMovie));
-        mFollowButton.setOnClickListener(view -> {
-            if (mFollowButton.isSelected()) {
-                mFollowButton.setSelected(false);
-                mFollowButton.setText(R.string.btn_follow);
-                provider.deleteMovie(mMovie);
-            } else {
-                mFollowButton.setSelected(true);
-                mFollowButton.setText(R.string.btn_unfollow);
-                provider.addMovie(mMovie);
-            }
-        });
-
-        mBackdropImageView.setOnClickListener(v -> {
-
-        });
-
-        Glide.with(this)
-                .load("http://image.tmdb.org/t/p/w500/" + mMovie.getBackdropPath())
-                .centerCrop()
-                .placeholder(R.color.colorPrimary)
-                .crossFade()
-                .into(mBackdropImageView);
+        fillUI(movie);
 
 
         // Show the Up button in the action bar.
@@ -124,11 +96,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
+/*
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putParcelable(MovieDetailFragment.KEY_MOVIE, mMovie);
+            arguments.putParcelable(MovieDetailFragment.KEY_MOVIE, movie);
             MovieDetailFragment fragment = new MovieDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -136,13 +109,53 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     .commit();
             Log.d(TAG, "onCreate " + "inside");
         }
+*/
+    }
+
+    private void fillUI(Movie movie) {
+        mFollowButton.setSelected(mProvider.isFav(movie));
+        mFollowButton.setOnClickListener(view -> {
+            if (mFollowButton.isSelected()) {
+                mFollowButton.setSelected(false);
+                mFollowButton.setText(R.string.btn_follow);
+                mProvider.deleteMovie(movie);
+            } else {
+                mFollowButton.setSelected(true);
+                mFollowButton.setText(R.string.btn_unfollow);
+                mProvider.addMovie(movie);
+            }
+        });
+
+        mStateTextView.setText(movie.getReleaseDate());
+        mInfoBarTextView.setText("Rated " + movie.getVoteAverage() + "   ·   By " + movie.getVoteCount() + " member");
+
+        mDescriptionTextView.setText(movie.getOverview());
+        // toggle the ExpandableTextView
+        mDescriptionTextView.setAnimationDuration(200L);
+        mReadMoreTextView.setOnClickListener(v -> {
+            mDescriptionTextView.toggle();
+            mReadMoreTextView.setText(mDescriptionTextView.isExpanded() ? R.string.read_less : R.string.read_more);
+        });
+
+        Glide.with(this)
+                .load("http://image.tmdb.org/t/p/w500/" + movie.getBackdropPath())
+                .centerCrop()
+                .placeholder(R.color.colorPrimary)
+                .crossFade()
+                .into(mBackdropImageView);
+        Glide.with(this)
+                .load("http://image.tmdb.org/t/p/w500/" + movie.getPosterPath())
+                .centerCrop()
+                .placeholder(R.color.colorPrimary)
+                .crossFade()
+                .into(mPosterImageView);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(FAV_BUTTON_STATE, isSelected);
-        Log.d(TAG, "onSaveInstanceState " + isSelected);
+        outState.putBoolean(FAV_BUTTON_STATE, mFollowButton.isSelected());
+        Log.d(TAG, "onSaveInstanceState " + mFollowButton.isSelected());
     }
 
     @Override
