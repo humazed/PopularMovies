@@ -10,8 +10,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +25,23 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.huma.popularmovies.R;
+import com.example.huma.popularmovies.adapter.ReviewsAdapter;
+import com.example.huma.popularmovies.adapter.TrailersAdapter;
+import com.example.huma.popularmovies.api.TheMovieDbAPI;
 import com.example.huma.popularmovies.db.MoviesDBProviderUtils;
 import com.example.huma.popularmovies.model.Movie;
+import com.example.huma.popularmovies.model.Reviews;
+import com.example.huma.popularmovies.model.Trailers;
 
 import at.blogc.android.views.ExpandableTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieDetailsFragment extends Fragment {
     private static final String TAG = MovieDetailsFragment.class.getSimpleName();
@@ -44,15 +56,17 @@ public class MovieDetailsFragment extends Fragment {
     @BindView(R.id.poster_imageView) ImageView mPosterImageView;
     @BindView(R.id.title_textView) TextView mTitleTextView;
     @BindView(R.id.state_textView) TextView mStateTextView;
-    @BindView(R.id.description_textView) ExpandableTextView mDescriptionTextView;
+    @BindView(R.id.content_textView) ExpandableTextView mDescriptionTextView;
     @BindView(R.id.read_more_textView) TextView mReadMoreTextView;
     @BindView(R.id.tv_show_description_container) LinearLayout mTvShowDescriptionContainer;
     @BindView(R.id.info_bar_textView) TextView mInfoBarTextView;
-    @BindView(R.id.episode_tracker_title_textView) TextView mEpisodeTrackerTitleTextView;
-    @BindView(R.id.episode_tracker_recyclerView) RecyclerView mEpisodeTrackerRecyclerView;
     @BindView(R.id.tv_show_progress_bar) ProgressBar mTvShowProgressBar;
     @BindView(R.id.scroll_view) NestedScrollView mScrollView;
     @BindView(R.id.coordinator) CoordinatorLayout mCoordinator;
+    @BindView(R.id.trailers_title_textView) TextView mTrailersTitleTextView;
+    @BindView(R.id.trailers_recyclerView) RecyclerView mTrailersRecyclerView;
+    @BindView(R.id.reviews_title_textView) TextView mReviewsTitleTextView;
+    @BindView(R.id.reviews_recyclerView) RecyclerView mReviewsRecyclerView;
     Unbinder unbinder;
 
     private Movie mMovie;
@@ -83,15 +97,13 @@ public class MovieDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
         unbinder = ButterKnife.bind(this, view);
-
+        mProvider = new MoviesDBProviderUtils(getActivity());
 
         if (savedInstanceState != null) {
             boolean isSelected = savedInstanceState.getBoolean(FAV_BUTTON_STATE);
             mFollowButton.setSelected(isSelected);
             mFollowButton.setText(isSelected ? R.string.btn_unfollow : R.string.btn_follow);
         }
-
-        mProvider = new MoviesDBProviderUtils(getActivity());
 
         fillUI(mMovie);
 
@@ -149,8 +161,61 @@ public class MovieDetailsFragment extends Fragment {
                 .placeholder(R.color.colorPrimary)
                 .crossFade()
                 .into(mPosterImageView);
+
+        loadTrails(movie);
+        loadReviews(movie);
     }
 
+    private void loadTrails(Movie movie) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(TheMovieDbAPI.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TheMovieDbAPI dbAPI = retrofit.create(TheMovieDbAPI.class);
+        Call<Trailers> trailersCall = dbAPI.getTrailers(movie.getId());
+        trailersCall.enqueue(new Callback<Trailers>() {
+            @Override
+            public void onResponse(Call<Trailers> call, Response<Trailers> response) {
+                if (response.body() != null) {
+                    Log.d(TAG, "response.body() = " + response.body());
+                    mTrailersRecyclerView.setLayoutManager(
+                            new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                    mTrailersRecyclerView.setAdapter(new TrailersAdapter(response.body().getResults()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Trailers> call, Throwable t) {
+            }
+        });
+
+    }
+
+    private void loadReviews(Movie movie) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(TheMovieDbAPI.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TheMovieDbAPI dbAPI = retrofit.create(TheMovieDbAPI.class);
+        Call<Reviews> trailersCall = dbAPI.getReviews(movie.getId());
+        trailersCall.enqueue(new Callback<Reviews>() {
+            @Override
+            public void onResponse(Call<Reviews> call, Response<Reviews> response) {
+                if (response.body() != null) {
+                    Log.d(TAG, "response.body() = " + response.body());
+                    mReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    mReviewsRecyclerView.setAdapter(new ReviewsAdapter(response.body().getResults()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reviews> call, Throwable t) {
+            }
+        });
+
+    }
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

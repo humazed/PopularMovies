@@ -204,8 +204,8 @@ public class MovieDetailFragment extends Fragment {
                     UiUtils.setListViewHeightBasedOnItems(mTrailsListView);
 
                     if (getActivity() != null)
-                        mTrailsListView.setAdapter(new ArrayAdapter<>(getActivity(),
-                                R.layout.item_video, R.id.video_name, s));
+//                        mTrailsListView.setAdapter(new ArrayAdapter<>(getActivity(),
+//                                R.layout.row_trailer, R.id.video_name, s));
 
 
                     Log.d(TAG, "onResponse " + response.body().toString());

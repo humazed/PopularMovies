@@ -110,7 +110,7 @@
                 android:paddingRight="12dp">
 
                 <at.blogc.android.views.ExpandableTextView
-                    android:id="@+id/description_textView"
+                    android:id="@+id/content_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -146,24 +146,48 @@
                 tools:text="Rating 8.6  ·  HBO  ·  Drama  ·  60 min"/>
 
             <TextView
-                android:id="@+id/episode_tracker_title_textView"
+                android:id="@+id/trailers_title_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/poster_imageView"
                 android:layout_below="@id/info_bar_textView"
                 android:layout_marginTop="18dp"
-                android:text="@string/episode_tracker_title"
+                android:text="@string/trailers_title"
                 android:textColor="#ffcccccc"
                 android:textSize="18sp"/>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/episode_tracker_recyclerView"
+                android:id="@+id/trailers_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/episode_tracker_title_textView"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="23dp"/>
+                android:layout_below="@id/trailers_title_textView"
+                android:layout_marginTop="@dimen/trailer_list_vertical_padding"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                tools:listitem="@layout/row_trailer"/>
+
+            <TextView
+                android:id="@+id/reviews_title_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/poster_imageView"
+                android:layout_below="@id/trailers_recyclerView"
+                android:layout_marginTop="18dp"
+                android:text="@string/reviews_title"
+                android:textColor="#ffcccccc"
+                android:textSize="18sp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/reviews_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/reviews_title_textView"
+                android:layout_marginBottom="36dp"
+                android:layout_marginTop="@dimen/trailer_list_vertical_padding"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/row_trailer"/>
 
             <ProgressBar
                 android:id="@+id/tv_show_progress_bar"

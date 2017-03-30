@@ -64,4 +64,12 @@ public class Trailers {
     public void setResults(List<Trailer> results) {
         this.results = results;
     }
+
+    @Override
+    public String toString() {
+        return "Trailers{" +
+                "id=" + id +
+                ", results=" + results +
+                '}';
+    }
 }

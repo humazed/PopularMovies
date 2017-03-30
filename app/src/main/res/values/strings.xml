@@ -10,7 +10,8 @@
 
     <!--MovieDetailActivity start-->
     <string name="read_more"><u>Read more…</u></string>
-    <string name="episode_tracker_title">Seasons</string>
+    <string name="trailers_title">Trailers</string>
+    <string name="reviews_title">Reviews</string>
     <string name="products_title">Awesome Merchandise</string>
     <string name="powered_by_amazon">Powered by Amazon</string>
     <string name="you_may_also_like">You may also like</string>

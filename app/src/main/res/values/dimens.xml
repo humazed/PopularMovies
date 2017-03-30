@@ -17,6 +17,10 @@
     <dimen name="movie_details_poster_top_margin">-16dp</dimen>
     <dimen name="movie_details_poster_left_margin">16dp</dimen>
 
+    <dimen name="trailer_width_for_detail">150dp</dimen>
+    <dimen name="trailer_height_for_detail">100dp</dimen>
+    <dimen name="trailer_list_vertical_padding">16dp</dimen>
+
     <dimen name="movie_details_margin">0dp</dimen>
     <dimen name="movie_details_content_margin_bottom">0dp</dimen>
 
