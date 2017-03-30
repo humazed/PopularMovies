@@ -1,8 +1,10 @@
 package com.example.huma.popularmovies.ui.movies_list;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +70,11 @@ public class MoviesExploreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movies_explore, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        update(TheMovieDbAPI.TOP_RATED);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        @TheMovieDbAPI.SortingOrder
+        String sortBy = preferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
+
+        update(sortBy);
 
         return view;
     }

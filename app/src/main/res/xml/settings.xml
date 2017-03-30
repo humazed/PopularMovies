@@ -4,9 +4,8 @@
     <ListPreference
         android:entries="@array/pref_sort_mode_titles"
         android:entryValues="@array/pref_sort_mode_values"
-        android:key="example_list"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
+        android:key="@string/key_sort_by"
+        android:defaultValue="1"
         android:title="@string/pref_title_movies_sort"/>
 
 
