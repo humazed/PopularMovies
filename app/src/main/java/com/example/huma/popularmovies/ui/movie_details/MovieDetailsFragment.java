@@ -49,7 +49,6 @@ public class MovieDetailsFragment extends Fragment {
     private static final String ARG_MOVIE = "movie";
     public static final String FAV_BUTTON_STATE = "favButtonState";
     public static final String KEY_MOVIE = "move";
-    public static final String KEY_TWO_PANE = "TwoPane";
 
     @BindView(R.id.backdrop_imageView) ImageView mBackdropImageView;
     @BindView(R.id.toolbar) Toolbar mToolbar;

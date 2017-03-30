@@ -25,7 +25,7 @@ public class MoviesListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movies_list);
+        setContentView(R.layout.movies_list);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));

@@ -106,19 +106,13 @@ public class MoviesExploreFragment extends Fragment {
             Log.d(TAG, "setupRecyclerView " + "isTablet: " + isTablet);
             Movie movie = movies.get(position);
             if (isTablet) {
-                Bundle arguments = new Bundle();
-                arguments.putParcelable(MovieDetailsFragment.KEY_MOVIE, movie);
-                arguments.putBoolean(MovieDetailsFragment.KEY_TWO_PANE, true);
-                MovieDetailsFragment fragment = new MovieDetailsFragment();
-                fragment.setArguments(arguments);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.movie_detail_container, fragment)
+                        .replace(R.id.movie_detail_container,
+                                MovieDetailsFragment.newInstance(movie))
                         .commit();
             } else {
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra(MovieDetailsFragment.KEY_MOVIE, movie);
-                intent.putExtra(MovieDetailsFragment.KEY_TWO_PANE, false);
-
                 getActivity().startActivity(intent);
             }
         });
