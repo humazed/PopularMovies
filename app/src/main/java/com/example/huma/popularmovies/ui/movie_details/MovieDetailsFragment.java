@@ -144,7 +144,7 @@ public class MovieDetailsFragment extends Fragment {
         mDescriptionTextView.setText(movie.getOverview());
         // toggle the ExpandableTextView
         mDescriptionTextView.setAnimationDuration(200L);
-        mReadMoreTextView.setOnClickListener(v -> {
+        mTvShowDescriptionContainer.setOnClickListener(v -> {
             mDescriptionTextView.toggle();
             mReadMoreTextView.setText(mDescriptionTextView.isExpanded() ? R.string.read_less : R.string.read_more);
         });
