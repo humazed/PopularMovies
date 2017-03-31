@@ -37,15 +37,15 @@ public class MoviesExploreFragment extends Fragment {
     private static final String TAG = MoviesExploreFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
 
-    Unbinder unbinder;
-
     @BindView(R.id.explore_recyclerView) RecyclerView mExploreRecyclerView;
-
     @BindBool(R.bool.isTablet) boolean isTablet;
+    Unbinder unbinder;
 
     private String mParam1;
 
     private OnFragmentInteractionListener mListener;
+    private SharedPreferences mPreferences;
+    private SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener;
 
     public MoviesExploreFragment() { /*Required empty public constructor*/ }
 
@@ -70,15 +70,25 @@ public class MoviesExploreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movies_explore, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        @TheMovieDbAPI.SortingOrder
-        String sortBy = preferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mOnSharedPreferenceChangeListener = (sharedPreferences, key) -> {
+            Log.d(TAG, "key = " + key);
+            if (key.equals(getString(R.string.key_sort_by))) {
+                @TheMovieDbAPI.SortingOrder
+                String sortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
+                Log.d(TAG, "registerOnSharedPreferenceChangeListener " + "val: " + sortBy);
 
+                update(sortBy);
+            }
+        };
+        mPreferences.registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+
+        @TheMovieDbAPI.SortingOrder
+        String sortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
         update(sortBy);
 
         return view;
     }
-
 
     //fetch data form internet and display it.
     private void update(@TheMovieDbAPI.SortingOrder String sortBy) {
