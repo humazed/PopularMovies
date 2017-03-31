@@ -19,7 +19,8 @@
 
         <activity
             android:name=".ui.movies_list.MoviesListActivity"
-            android:label="@string/title_activity_movies_list">
+            android:label="@string/title_activity_movies_list"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
