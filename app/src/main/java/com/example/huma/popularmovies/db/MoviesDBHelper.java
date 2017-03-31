@@ -10,12 +10,12 @@ import com.example.huma.popularmovies.db.MoveContract.MovieEntry;
 /**
  * Created by huma on 2/1/2016.
  */
-public class MoviesDbHelper extends SQLiteOpenHelper {
+public class MoviesDBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "movies";
     private static final int DB_VERSION = 1;
     String MOVIES = "movies";
 
-    public MoviesDbHelper(Context context) {
+    public MoviesDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

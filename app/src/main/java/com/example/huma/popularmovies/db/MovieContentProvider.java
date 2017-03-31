@@ -19,7 +19,7 @@ public class MovieContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        db = new MoviesDbHelper(getContext()).getWritableDatabase();
+        db = new MoviesDBHelper(getContext()).getWritableDatabase();
         return true;
     }
 

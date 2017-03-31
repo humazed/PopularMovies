@@ -18,7 +18,7 @@ public class MoviesDBProviderUtils {
 
     public MoviesDBProviderUtils(Context context) {
         mContext = context;
-        dp = new MoviesDbHelper(context).getWritableDatabase();
+        dp = new MoviesDBHelper(context).getWritableDatabase();
     }
 
     public void addMovie(Movie movie) {
