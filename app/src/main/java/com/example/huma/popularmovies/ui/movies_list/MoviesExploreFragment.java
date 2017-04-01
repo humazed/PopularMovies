@@ -20,6 +20,7 @@ import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Movies;
 import com.example.huma.popularmovies.ui.movie_details.MovieDetailsActivity;
 import com.example.huma.popularmovies.ui.movie_details.MovieDetailsFragment;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +48,10 @@ public class MoviesExploreFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private SharedPreferences mPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener;
+    private TheMovieDbAPI mAPI;
+    private int mPage;
+    private
+    String mSortBy;
 
     public MoviesExploreFragment() { /*Required empty public constructor*/ }
 
@@ -70,39 +76,44 @@ public class MoviesExploreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movies_explore, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        mPage = 1;
+
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mOnSharedPreferenceChangeListener = (sharedPreferences, key) -> {
             Log.d(TAG, "key = " + key);
             if (key.equals(getString(R.string.key_sort_by))) {
-                @TheMovieDbAPI.SortingOrder
-                String sortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
-                Log.d(TAG, "registerOnSharedPreferenceChangeListener " + "val: " + sortBy);
+                mSortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
+                Log.d(TAG, "registerOnSharedPreferenceChangeListener " + "val: " + mSortBy);
 
-                update(sortBy);
+                update(mSortBy, mPage);
             }
         };
         mPreferences.registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 
-        @TheMovieDbAPI.SortingOrder
-        String sortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
-        update(sortBy);
+        mSortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
+        update(mSortBy, mPage);
 
         return view;
     }
 
     //fetch data form internet and display it.
-    private void update(@TheMovieDbAPI.SortingOrder String sortBy) {
+    private void update(String sortBy, int page) {
         //http://api.themoviedb.org/3/discover/movie?api_key=397b65dc1146c99252660a80e3d34c6d
         // &sort_by=popularity.desc
-        Log.d(TAG, "update " + "star");
+
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(TheMovieDbAPI.BASE_URL)
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        TheMovieDbAPI dbAPI = retrofit.create(TheMovieDbAPI.class);
-        Call<Movies> moviesCall = dbAPI.getMovies(sortBy);
-        moviesCall.enqueue(new Callback<Movies>() {
+        mAPI = retrofit.create(TheMovieDbAPI.class);
+        mAPI.getMovies(sortBy, page).enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
                 List<Movie> movies = response.body().getResults();
@@ -132,6 +143,27 @@ public class MoviesExploreFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
+
+        //minimum number of unseen items before start loading more
+        adapter.setAutoLoadMoreSize(50);
+        adapter.setOnLoadMoreListener(() -> {
+            Log.d(TAG, "setupRecyclerView " + "setOnLoadMoreListener");
+
+            mAPI.getMovies(mSortBy, ++mPage).enqueue(new Callback<Movies>() {
+                @Override
+                public void onResponse(Call<Movies> call, Response<Movies> response) {
+                    List<Movie> movies = response.body().getResults();
+                    adapter.addData(movies);
+                    adapter.loadMoreComplete();
+                }
+
+                @Override
+                public void onFailure(Call<Movies> call, Throwable t) {
+                    Log.e(TAG, "onFailure: ", t);
+                    adapter.loadMoreFail();
+                }
+            });
+        }, mExploreRecyclerView);
 
         mExploreRecyclerView.setAdapter(adapter);
         mExploreRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
