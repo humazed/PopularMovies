@@ -22,7 +22,6 @@ import com.example.huma.popularmovies.model.Movie;
 import com.example.huma.popularmovies.model.Movies;
 import com.example.huma.popularmovies.ui.movie_details.MovieDetailsActivity;
 import com.example.huma.popularmovies.ui.movie_details.MovieDetailsFragment;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.util.List;
 
@@ -30,7 +29,6 @@ import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,6 +36,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.chad.library.adapter.base.BaseQuickAdapter.SCALEIN;
+import static com.example.huma.popularmovies.utils.NetworkUtil.getCaCheOkHttpClient;
 
 public class MoviesExploreFragment extends Fragment {
     private static final String TAG = MoviesExploreFragment.class.getSimpleName();
@@ -103,13 +102,9 @@ public class MoviesExploreFragment extends Fragment {
 
     //fetch data form internet and display it.
     private void update(String sortBy, int page) {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addNetworkInterceptor(new StethoInterceptor())
-                .build();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(TheMovieDbAPI.BASE_URL)
-                .client(okHttpClient)
+                .client(getCaCheOkHttpClient(getActivity()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -130,6 +125,7 @@ public class MoviesExploreFragment extends Fragment {
             }
         });
     }
+
 
     private void setupRecyclerView(List<Movie> movies) {
         MoviesAdapter adapter = new MoviesAdapter(movies);
@@ -156,9 +152,11 @@ public class MoviesExploreFragment extends Fragment {
             mAPI.getMovies(mSortBy, ++mPage).enqueue(new Callback<Movies>() {
                 @Override
                 public void onResponse(Call<Movies> call, Response<Movies> response) {
-                    List<Movie> movies = response.body().getResults();
-                    adapter.addData(movies);
-                    adapter.loadMoreComplete();
+                    if (response.body() != null) {
+                        List<Movie> movies = response.body().getResults();
+                        adapter.addData(movies);
+                        adapter.loadMoreComplete();
+                    } else adapter.loadMoreFail();
                 }
 
                 @Override

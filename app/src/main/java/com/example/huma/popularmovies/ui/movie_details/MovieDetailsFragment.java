@@ -44,6 +44,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.huma.popularmovies.utils.NetworkUtil.getCaCheOkHttpClient;
+
 public class MovieDetailsFragment extends Fragment {
     private static final String TAG = MovieDetailsFragment.class.getSimpleName();
     private static final String ARG_MOVIE = "movie";
@@ -142,7 +144,7 @@ public class MovieDetailsFragment extends Fragment {
         mStateTextView.setText(movie.getReleaseDate());
         mInfoBarTextView.setText("Rated " + movie.getVoteAverage() + "   ·   By " + movie.getVoteCount() + " member");
 
-        if (mProvider.isFav(movie)){
+        if (mProvider.isFav(movie)) {
             mFollowButton.setSelected(true);
             mFollowButton.setText(R.string.btn_unfollow);
         }
@@ -175,6 +177,7 @@ public class MovieDetailsFragment extends Fragment {
     private void loadTrails(Movie movie) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(TheMovieDbAPI.BASE_URL)
+                .client(getCaCheOkHttpClient(getActivity()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -193,6 +196,7 @@ public class MovieDetailsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Trailers> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
             }
         });
 
@@ -201,6 +205,7 @@ public class MovieDetailsFragment extends Fragment {
     private void loadReviews(Movie movie) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(TheMovieDbAPI.BASE_URL)
+                .client(getCaCheOkHttpClient(getActivity()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -218,6 +223,7 @@ public class MovieDetailsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Reviews> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
             }
         });
 
