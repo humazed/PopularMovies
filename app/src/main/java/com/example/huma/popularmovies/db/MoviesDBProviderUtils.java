@@ -50,7 +50,7 @@ public class MoviesDBProviderUtils {
 //        dp.delete(MovieEntry.COLUMN_TABLE_NAME, MovieEntry.COLUMN_MOVIE_ID + "=?", new String[]{String.valueOf(movie.getId())});
     }
 
-    public List<Movie> getMovies() {
+    public List<Movie> getFavMovies() {
         String[] columns = {MovieEntry.COLUMN_MOVIE_ID,
                 MovieEntry.COLUMN_MOVIE_TITLE,
                 MovieEntry.COLUMN_MOVIE_OVERVIEW,

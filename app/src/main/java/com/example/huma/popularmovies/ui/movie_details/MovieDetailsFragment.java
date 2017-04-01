@@ -121,7 +121,6 @@ public class MovieDetailsFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 

@@ -120,7 +120,6 @@ public class MoviesExploreFragment extends Fragment {
         MoviesAdapter adapter = new MoviesAdapter(movies);
 
         adapter.setOnItemClickListener((adapter1, view, position) -> {
-            Log.d(TAG, "setupRecyclerView " + "isTablet: " + isTablet);
             Movie movie = movies.get(position);
             if (isTablet) {
                 getActivity().getSupportFragmentManager().beginTransaction()
