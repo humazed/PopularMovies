@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.huma.popularmovies.R;
 import com.example.huma.popularmovies.adapter.MoviesAdapter;
@@ -43,6 +45,7 @@ public class MoviesExploreFragment extends Fragment {
 
     @BindView(R.id.explore_recyclerView) RecyclerView mExploreRecyclerView;
     @BindBool(R.bool.isTablet) boolean isTablet;
+    @BindView(R.id.progressBar) ProgressBar mProgressBar;
     Unbinder unbinder;
 
     private String mParam1;
@@ -114,13 +117,16 @@ public class MoviesExploreFragment extends Fragment {
         mAPI.getMovies(sortBy, page).enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
+                mProgressBar.setVisibility(View.GONE);
                 List<Movie> movies = response.body().getResults();
                 setupRecyclerView(movies);
             }
 
             @Override
             public void onFailure(Call<Movies> call, Throwable t) {
+                mProgressBar.setVisibility(View.GONE);
                 Log.e(TAG, "onFailure: ", t);
+                Toast.makeText(getActivity(), "Loading Failed", Toast.LENGTH_LONG).show();
             }
         });
     }
