@@ -109,6 +109,19 @@ public class MovieDetailsFragment extends Fragment {
 
         fillUI(mMovie);
 
+        mFollowButton.setOnClickListener(view1 -> {
+            if (mFollowButton.isSelected()) {
+                mFollowButton.setSelected(false);
+                mFollowButton.setText(R.string.btn_follow);
+                mProvider.deleteMovie(mMovie);
+            } else {
+                mFollowButton.setSelected(true);
+                mFollowButton.setText(R.string.btn_unfollow);
+                mProvider.addMovie(mMovie);
+            }
+        });
+
+
         return view;
     }
 
@@ -130,18 +143,10 @@ public class MovieDetailsFragment extends Fragment {
         mStateTextView.setText(movie.getReleaseDate());
         mInfoBarTextView.setText("Rated " + movie.getVoteAverage() + "   ·   By " + movie.getVoteCount() + " member");
 
-        mFollowButton.setSelected(mProvider.isFav(movie));
-        mFollowButton.setOnClickListener(view -> {
-            if (mFollowButton.isSelected()) {
-                mFollowButton.setSelected(false);
-                mFollowButton.setText(R.string.btn_follow);
-                mProvider.deleteMovie(movie);
-            } else {
-                mFollowButton.setSelected(true);
-                mFollowButton.setText(R.string.btn_unfollow);
-                mProvider.addMovie(movie);
-            }
-        });
+        if (mProvider.isFav(movie)){
+            mFollowButton.setSelected(true);
+            mFollowButton.setText(R.string.btn_unfollow);
+        }
 
         mDescriptionTextView.setText(movie.getOverview());
         // toggle the ExpandableTextView

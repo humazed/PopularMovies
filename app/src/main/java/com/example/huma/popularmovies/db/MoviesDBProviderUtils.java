@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.huma.popularmovies.db.MoveContract.MovieEntry;
 import com.example.huma.popularmovies.model.Movie;
@@ -13,6 +14,8 @@ import java.util.List;
 
 
 public class MoviesDBProviderUtils {
+    private static final String TAG = MoviesDBProviderUtils.class.getSimpleName();
+
     Context mContext;
     private SQLiteDatabase dp;
 
@@ -22,6 +25,7 @@ public class MoviesDBProviderUtils {
     }
 
     public void addMovie(Movie movie) {
+        Log.d(TAG, "addMovie() called with: " + "movie = [" + movie + "]");
         ContentValues values = new ContentValues();
         values.put(MovieEntry.COLUMN_MOVIE_ID, movie.getId());
         values.put(MovieEntry.COLUMN_MOVIE_TITLE, movie.getTitle());
@@ -39,6 +43,7 @@ public class MoviesDBProviderUtils {
     }
 
     public void deleteMovie(Movie movie) {
+        Log.d(TAG, "deleteMovie() called with: " + "movie = [" + movie + "]");
         mContext.getContentResolver().delete(MovieEntry.CONTENT_URI,
                 MovieEntry.COLUMN_MOVIE_ID + "=?", new String[]{String.valueOf(movie.getId())});
 

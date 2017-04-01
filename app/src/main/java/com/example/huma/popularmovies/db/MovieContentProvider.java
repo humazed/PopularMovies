@@ -36,7 +36,7 @@ public class MovieContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         int rowsDeleted = db.delete(MovieEntry.TABLE_NAME, selection, selectionArgs);
 
         if (rowsDeleted != 0)
@@ -46,7 +46,7 @@ public class MovieContentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         Cursor retCursor = db.query(
                 MovieEntry.TABLE_NAME,
@@ -63,14 +63,14 @@ public class MovieContentProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         // No need to be implemented.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection,
+    public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         // No need to be implemented.
         throw new UnsupportedOperationException("Not yet implemented");
