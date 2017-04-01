@@ -166,6 +166,7 @@ public class MoviesExploreFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        mPreferences.unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
     }
 
     public interface OnFragmentInteractionListener {
