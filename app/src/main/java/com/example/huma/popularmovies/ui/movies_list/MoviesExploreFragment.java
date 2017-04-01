@@ -112,9 +112,11 @@ public class MoviesExploreFragment extends Fragment {
         mAPI.getMovies(sortBy, page).enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
-                mProgressBar.setVisibility(View.GONE);
-                List<Movie> movies = response.body().getResults();
-                setupRecyclerView(movies);
+                if (response.body() != null) {
+                    mProgressBar.setVisibility(View.GONE);
+                    List<Movie> movies = response.body().getResults();
+                    setupRecyclerView(movies);
+                }
             }
 
             @Override
