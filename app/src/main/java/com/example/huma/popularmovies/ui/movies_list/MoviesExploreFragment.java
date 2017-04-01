@@ -35,6 +35,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.chad.library.adapter.base.BaseQuickAdapter.SCALEIN;
+
 public class MoviesExploreFragment extends Fragment {
     private static final String TAG = MoviesExploreFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
@@ -98,10 +100,6 @@ public class MoviesExploreFragment extends Fragment {
 
     //fetch data form internet and display it.
     private void update(String sortBy, int page) {
-        //http://api.themoviedb.org/3/discover/movie?api_key=397b65dc1146c99252660a80e3d34c6d
-        // &sort_by=popularity.desc
-
-
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
@@ -145,7 +143,7 @@ public class MoviesExploreFragment extends Fragment {
         });
 
         //minimum number of unseen items before start loading more
-        adapter.setAutoLoadMoreSize(50);
+        adapter.setAutoLoadMoreSize(20);
         adapter.setOnLoadMoreListener(() -> {
             Log.d(TAG, "setupRecyclerView " + "setOnLoadMoreListener");
 
@@ -164,6 +162,8 @@ public class MoviesExploreFragment extends Fragment {
                 }
             });
         }, mExploreRecyclerView);
+
+        adapter.openLoadAnimation(SCALEIN);
 
         mExploreRecyclerView.setAdapter(adapter);
         mExploreRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));

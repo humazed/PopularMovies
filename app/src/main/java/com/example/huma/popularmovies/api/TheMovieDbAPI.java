@@ -17,7 +17,7 @@ public interface TheMovieDbAPI {
 
     String TOP_RATED = "top_rated", POPULAR = "popular";
 
-    //http://api.themoviedb.org/3/movie/top_rated?api_key=397b65dc1146c99252660a80e3d34c6d
+    //http://api.themoviedb.org/3/movie/popular?api_key=397b65dc1146c99252660a80e3d34c6d&page=1
     @GET("movie/{sort_by}?api_key=" + API_KEY)
     Call<Movies> getMovies(@Path("sort_by") @SortingOrder String sortBy, @Query("page") int page);
 
