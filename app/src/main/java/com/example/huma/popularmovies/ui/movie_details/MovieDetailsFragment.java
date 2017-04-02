@@ -76,7 +76,6 @@ public class MovieDetailsFragment extends Fragment {
     private Movie mMovie;
     private MoviesDBProviderUtils mProvider;
 
-
     private OnFragmentInteractionListener mListener;
 
     public MovieDetailsFragment() { /*Required empty public constructor*/ }

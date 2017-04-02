@@ -6,13 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.huma.popularmovies.R;
@@ -44,7 +44,7 @@ public class MoviesExploreFragment extends Fragment {
 
     @BindView(R.id.explore_recyclerView) RecyclerView mExploreRecyclerView;
     @BindBool(R.bool.isTablet) boolean isTablet;
-    @BindView(R.id.progressBar) ProgressBar mProgressBar;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
     Unbinder unbinder;
 
     private String mParam1;
@@ -53,7 +53,7 @@ public class MoviesExploreFragment extends Fragment {
     private SharedPreferences mPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener;
     private TheMovieDbAPI mAPI;
-    private int mPage;
+    private int mPage = 1;
     private
     String mSortBy;
 
@@ -80,7 +80,7 @@ public class MoviesExploreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movies_explore, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        mPage = 1;
+        mSwipeRefreshLayout.setRefreshing(true);
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mOnSharedPreferenceChangeListener = (sharedPreferences, key) -> {
@@ -89,10 +89,13 @@ public class MoviesExploreFragment extends Fragment {
                 mSortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
                 Log.d(TAG, "registerOnSharedPreferenceChangeListener " + "val: " + mSortBy);
 
-                update(mSortBy, mPage);
+                update(mSortBy, 1);
             }
         };
+
         mPreferences.registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+
+        mSwipeRefreshLayout.setOnRefreshListener(() -> update(mSortBy, 1));
 
         mSortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
         update(mSortBy, mPage);
@@ -113,7 +116,7 @@ public class MoviesExploreFragment extends Fragment {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
                 if (response.body() != null) {
-                    mProgressBar.setVisibility(View.GONE);
+                    mSwipeRefreshLayout.setRefreshing(false);
                     List<Movie> movies = response.body().getResults();
                     setupRecyclerView(movies);
                 }
@@ -121,7 +124,7 @@ public class MoviesExploreFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Movies> call, Throwable t) {
-                mProgressBar.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
                 Log.e(TAG, "onFailure: ", t);
                 Toast.makeText(getActivity(), "Loading Failed", Toast.LENGTH_LONG).show();
             }
@@ -147,7 +150,7 @@ public class MoviesExploreFragment extends Fragment {
         });
 
         //minimum number of unseen items before start loading more
-        adapter.setAutoLoadMoreSize(20);
+        adapter.setAutoLoadMoreSize(10);
         adapter.setOnLoadMoreListener(() -> {
             Log.d(TAG, "setupRecyclerView " + "setOnLoadMoreListener");
 
