@@ -2,9 +2,10 @@ package com.example.huma.popularmovies.ui.movies_list;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -41,6 +42,7 @@ import static com.example.huma.popularmovies.utils.NetworkUtil.getCaCheOkHttpCli
 public class MoviesExploreFragment extends Fragment {
     private static final String TAG = MoviesExploreFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
+    private static final String KEY_RECYCLER_STATE = "MoviesExploreFragment:recyclerState";
 
     @BindView(R.id.explore_recyclerView) RecyclerView mExploreRecyclerView;
     @BindBool(R.bool.isTablet) boolean isTablet;
@@ -49,7 +51,6 @@ public class MoviesExploreFragment extends Fragment {
 
     private String mParam1;
 
-    private OnFragmentInteractionListener mListener;
     private SharedPreferences mPreferences;
     private SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener;
     private TheMovieDbAPI mAPI;
@@ -179,28 +180,20 @@ public class MoviesExploreFragment extends Fragment {
         mExploreRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }
 
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        if (savedInstanceState != null) {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(KEY_RECYCLER_STATE);
+            mExploreRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
         }
     }
 
-    /*@Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
-
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_RECYCLER_STATE, mExploreRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
     @Override
@@ -208,10 +201,5 @@ public class MoviesExploreFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
         mPreferences.unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

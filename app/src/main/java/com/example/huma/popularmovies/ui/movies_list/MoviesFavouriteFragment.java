@@ -2,9 +2,10 @@ package com.example.huma.popularmovies.ui.movies_list;
 
 import android.content.Intent;
 import android.database.ContentObserver;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ import static com.example.huma.popularmovies.db.MoveContract.MovieEntry.CONTENT_
 public class MoviesFavouriteFragment extends Fragment {
     private static final String TAG = MoviesFavouriteFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
+    private static final String KEY_RECYCLER_STATE = "MoviesFavouriteFragment:recyclerState";
 
     @BindView(R.id.favourite_recyclerView) RecyclerView mFavouriteRecyclerView;
     @BindBool(R.bool.isTablet) boolean isTablet;
@@ -38,7 +40,6 @@ public class MoviesFavouriteFragment extends Fragment {
 
     private String mParam1;
 
-    private OnFragmentInteractionListener mListener;
     private MoviesDBProviderUtils mProvider;
     private ContentObserver mObserver;
 
@@ -108,27 +109,21 @@ public class MoviesFavouriteFragment extends Fragment {
         mFavouriteRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(KEY_RECYCLER_STATE);
+            mFavouriteRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
         }
     }
 
-    /*@Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
-
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_RECYCLER_STATE, mFavouriteRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
     @Override
@@ -136,20 +131,5 @@ public class MoviesFavouriteFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
         getActivity().getContentResolver().unregisterContentObserver(mObserver);
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
