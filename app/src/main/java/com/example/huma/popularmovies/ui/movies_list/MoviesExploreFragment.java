@@ -137,6 +137,7 @@ public class MoviesExploreFragment extends Fragment {
 
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             Movie movie = movies.get(position);
+            Log.d(TAG, "isTablet = " + isTablet);
             if (isTablet) {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.movie_detail_container,
