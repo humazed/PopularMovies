@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -55,8 +54,7 @@ public class MoviesExploreFragment extends Fragment {
     private SharedPreferences.OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener;
     private TheMovieDbAPI mAPI;
     private int mPage = 1;
-    private
-    String mSortBy;
+    private String mSortBy;
 
     public MoviesExploreFragment() { /*Required empty public constructor*/ }
 
@@ -90,22 +88,22 @@ public class MoviesExploreFragment extends Fragment {
                 mSortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
                 Log.d(TAG, "registerOnSharedPreferenceChangeListener " + "val: " + mSortBy);
 
-                update(mSortBy, 1);
+                update(mSortBy, 1, savedInstanceState);
             }
         };
 
         mPreferences.registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 
-        mSwipeRefreshLayout.setOnRefreshListener(() -> update(mSortBy, 1));
+        mSwipeRefreshLayout.setOnRefreshListener(() -> update(mSortBy, 1, savedInstanceState));
 
         mSortBy = mPreferences.getString(getString(R.string.key_sort_by), TheMovieDbAPI.POPULAR);
-        update(mSortBy, mPage);
+        update(mSortBy, mPage, savedInstanceState);
 
         return view;
     }
 
     //fetch data form internet and display it.
-    private void update(String sortBy, int page) {
+    private void update(String sortBy, int page, Bundle savedInstanceState) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(TheMovieDbAPI.BASE_URL)
                 .client(getCaCheOkHttpClient(getActivity()))
@@ -119,7 +117,7 @@ public class MoviesExploreFragment extends Fragment {
                 if (response.body() != null) {
                     mSwipeRefreshLayout.setRefreshing(false);
                     List<Movie> movies = response.body().getResults();
-                    setupRecyclerView(movies);
+                    setupRecyclerView(movies, savedInstanceState);
                 }
             }
 
@@ -133,7 +131,7 @@ public class MoviesExploreFragment extends Fragment {
     }
 
 
-    private void setupRecyclerView(List<Movie> movies) {
+    private void setupRecyclerView(List<Movie> movies, Bundle savedInstanceState) {
         MoviesAdapter adapter = new MoviesAdapter(movies);
 
         adapter.setOnItemClickListener((adapter1, view, position) -> {
@@ -152,7 +150,7 @@ public class MoviesExploreFragment extends Fragment {
         });
 
         //minimum number of unseen items before start loading more
-        adapter.setAutoLoadMoreSize(10);
+        adapter.setAutoLoadMoreSize(30);
         adapter.setOnLoadMoreListener(() -> {
             Log.d(TAG, "setupRecyclerView " + "setOnLoadMoreListener");
 
@@ -178,11 +176,6 @@ public class MoviesExploreFragment extends Fragment {
 
         mExploreRecyclerView.setAdapter(adapter);
         mExploreRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
 
         if (savedInstanceState != null) {
             Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(KEY_RECYCLER_STATE);
